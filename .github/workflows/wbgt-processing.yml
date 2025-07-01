@@ -10,125 +10,68 @@ on:
     # JST 9時から21時まで2時間毎に実行 (UTC: 0, 2, 4, 6, 8, 10, 12時)
     # JST換算: 9, 11, 13, 15, 17, 19, 21時
     - cron: "0 0,2,4,6,8,10,12 * * *"
-    # 週次ヘルスチェック用（日曜日 JST 9:00 = UTC 0:00）
-    - cron: "0 0 * * 0"
-  
   push:
     branches: [main]
-    paths:
-      - 'wbgt_processor.py'
-      - '.github/workflows/wbgt-processing.yml'
-  
   workflow_dispatch: # 手動実行も可能
-    inputs:
-      test_mode:
-        description: 'Test mode (all stations without time restriction)'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'false'
-          - 'true'
-      specific_station:
-        description: 'Test specific station (tateyama or ishinomaki)'
-        required: false
-        default: ''
-        type: choice
-        options:
-          - ''
-          - 'tateyama'
-          - 'ishinomaki'
 
 jobs:
-  process-wbgt-data:
+  update-wbgt:
     runs-on: ubuntu-latest
-    timeout-minutes: 15 # タイムアウト設定
-    
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
+    timeout-minutes: 10 # タイムアウト設定
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Set timezone to JST
+      - name: Generate WBGT Data
         run: |
-          sudo timedatectl set-timezone Asia/Tokyo
-          echo "Current time (JST): $(date)"
-
-      - name: Determine execution mode
-        id: execution_mode
-        run: |
-          if [ "${{ github.event.inputs.test_mode }}" = "true" ]; then
-            echo "mode=--test" >> $GITHUB_OUTPUT
-            echo "description=Test mode (all stations)" >> $GITHUB_OUTPUT
-          elif [ -n "${{ github.event.inputs.specific_station }}" ]; then
-            echo "mode=--test-${{ github.event.inputs.specific_station }}" >> $GITHUB_OUTPUT
-            echo "description=Test mode (${{ github.event.inputs.specific_station }})" >> $GITHUB_OUTPUT
-          else
-            echo "mode=" >> $GITHUB_OUTPUT
-            echo "description=Normal execution" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Process WBGT data
-        run: |
-          echo "🚀 Starting WBGT data processing..."
-          echo "Execution mode: ${{ steps.execution_mode.outputs.description }}"
-          python wbgt_processor.py ${{ steps.execution_mode.outputs.mode }}
-          echo "✅ Data processing completed"
-
-      - name: Display generated files
-        run: |
-          echo "📁 Generated files:"
-          ls -la *.html *.json 2>/dev/null || echo "No HTML/JSON files found"
-          
-          if [ -f "index.html" ]; then
-            echo "📄 index.html: $(wc -l < index.html) lines, $(wc -c < index.html) bytes"
-          fi
-          
-          if [ -f "wbgt_summary.json" ]; then
-            echo "📊 Summary data available"
-          fi
+          echo "🚀 WBGT データ処理開始"
+          python wbgt_processor.py
+          echo "✅ WBGT データ処理完了"
 
       - name: Check for changes
         id: check_changes
         run: |
           if git diff --quiet HEAD -- *.html *.json; then
             echo "changes=false" >> $GITHUB_OUTPUT
-            echo "📄 No changes detected"
+            echo "📋 変更なし: データファイルに変更はありません"
           else
             echo "changes=true" >> $GITHUB_OUTPUT
-            echo "📝 Changes detected:"
+            echo "📝 変更検出: データファイルが更新されました"
+            echo "変更されたファイル:"
             git diff --name-only HEAD -- *.html *.json
           fi
 
-    - name: Commit and push changes
-      if: steps.check_changes.outputs.changes == 'true'
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add *.html *.json
-        
-        # コミットメッセージに日本時間を使用
-        JST_TIME=$(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S JST')
-        git commit -m "🌡️ Auto-update WBGT data - ${JST_TIME}"
-        git push
-        echo "✅ Changes committed and pushed"
+      - name: Display file sizes
+        run: |
+          echo "📊 生成されたファイルサイズ:"
+          ls -lh *.html *.json || echo "ファイルが見つかりません"
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add *.html *.json
+
+          # コミットメッセージに日本時間を使用
+          JST_TIME=$(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S JST')
+          git commit -m "🌡️ Auto-update WBGT data - ${JST_TIME}"
+          git push
+
+          echo "✅ 変更をコミット・プッシュしました"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to GitHub Pages
         if: steps.check_changes.outputs.changes == 'true'
@@ -137,17 +80,18 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           publish_branch: gh-pages
-          force_orphan: false
-          enable_jekyll: false
+          force_orphan: false # 履歴を保持
+          enable_jekyll: false # Jekyllを無効化
+          cname: false # CNAMEファイルを作成しない
 
       - name: Deployment summary
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          echo "🚀 GitHub Pages deployment completed"
-          echo "📱 Dashboard URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          echo "🚀 GitHub Pages にデプロイ完了"
+          echo "📱 ダッシュボードURL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
 
       - name: No changes summary
         if: steps.check_changes.outputs.changes == 'false'
         run: |
-          echo "📊 No data changes detected, skipping deployment"
-          echo "🔄 Next execution: 2 hours later"
+          echo "📊 データに変更がないため、デプロイをスキップしました"
+          echo "🔄 次回実行: 2時間後"
