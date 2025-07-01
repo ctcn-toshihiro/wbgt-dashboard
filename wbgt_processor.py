@@ -902,7 +902,7 @@ def main():
         #        success_count += 1
         for station_key, station_config in STATIONS.items():
             print(f"\n{'='*30}")
-            success, alert_message = process_station(station_key, station_config)
+            success, alert_message = process_station(station_key, station_config)  # type: ignore
             if success:
                 success_count += 1
                 if alert_message:
@@ -974,6 +974,11 @@ def main():
                     danger_level = summary_data["stations"][station_key]["danger_level"]
                     print(f"WBGT_{station_key.upper()}={wbgt_value:.1f}")
                     print(f"DANGER_{station_key.upper()}={danger_level}")
+
+        print(f"[DEBUG] generate_alert_message() called for {station_name}")
+        if start_index is None:
+            print(f"[DEBUG] No matching time found for 2時間後: {target_time}")
+            return ""
 
     except Exception as e:
         print(f"\n❌ 処理中にエラーが発生しました:")
