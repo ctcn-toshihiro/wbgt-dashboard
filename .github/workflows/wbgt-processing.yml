@@ -1,16 +1,25 @@
 name: WBGT Data Processing
 
+# 同時実行制御を追加
+concurrency:
+  group: wbgt-processing-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
-  # 2時間毎にスケジュール実行（JST 9:00-21:00 対応）
   schedule:
-    # JST 9:00, 11:00, 13:00, 15:00, 17:00, 19:00, 21:00 に実行
-    # UTC時間で指定（JST - 9時間）
-    - cron: '0 0,2,4,6,8,10,12 * * *'  # UTC 0:00, 2:00, 4:00, 6:00, 8:00, 10:00, 12:00
+    # JST 9時から21時まで2時間毎に実行 (UTC: 0, 2, 4, 6, 8, 10, 12時)
+    # JST換算: 9, 11, 13, 15, 17, 19, 21時
+    - cron: "0 0,2,4,6,8,10,12 * * *"
     # 週次ヘルスチェック用（日曜日 JST 9:00 = UTC 0:00）
-    - cron: '0 0 * * 0'  # 毎週日曜日 UTC 0:00
+    - cron: "0 0 * * 0"
   
-  # 手動実行を許可
-  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'wbgt_processor.py'
+      - '.github/workflows/wbgt-processing.yml'
+  
+  workflow_dispatch: # 手動実行も可能
     inputs:
       test_mode:
         description: 'Test mode (all stations without time restriction)'
@@ -29,295 +38,124 @@ on:
           - ''
           - 'tateyama'
           - 'ishinomaki'
-      health_check:
-        description: 'Run health check mode'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'false'
-          - 'true'
-
-  # プッシュ時の実行（開発・テスト用）
-  push:
-    branches:
-      - main
-    paths:
-      - 'wbgt_processor.py'
-      - '.github/workflows/wbgt-processing.yml'
 
 jobs:
   process-wbgt-data:
     runs-on: ubuntu-latest
-    if: github.event.inputs.health_check != 'true'
+    timeout-minutes: 15 # タイムアウト設定
     
     permissions:
-      contents: write  # GitHub Pages デプロイ用
+      contents: write
       pages: write
       id-token: write
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # 履歴を保持
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        cache: 'pip'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests
-    
-    - name: Set timezone to JST
-      run: |
-        sudo timedatectl set-timezone Asia/Tokyo
-        echo "Current time (JST): $(date)"
-    
-    - name: Configure Git
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-    
-    - name: Determine execution mode
-      id: execution_mode
-      run: |
-        if [ "${{ github.event.inputs.test_mode }}" = "true" ]; then
-          echo "mode=--test" >> $GITHUB_OUTPUT
-          echo "description=Test mode (all stations)" >> $GITHUB_OUTPUT
-        elif [ -n "${{ github.event.inputs.specific_station }}" ]; then
-          echo "mode=--test-${{ github.event.inputs.specific_station }}" >> $GITHUB_OUTPUT
-          echo "description=Test mode (${{ github.event.inputs.specific_station }})" >> $GITHUB_OUTPUT
-        else
-          echo "mode=" >> $GITHUB_OUTPUT
-          echo "description=Normal execution" >> $GITHUB_OUTPUT
-        fi
-    
-    - name: Process WBGT data
-      id: process_data
-      run: |
-        echo "🚀 Starting WBGT data processing..."
-        echo "Execution mode: ${{ steps.execution_mode.outputs.description }}"
-        
-        # スクリプト実行
-        if python wbgt_processor.py ${{ steps.execution_mode.outputs.mode }}; then
-          echo "success=true" >> $GITHUB_OUTPUT
-          echo "✅ Data processing completed successfully"
-        else
-          echo "success=false" >> $GITHUB_OUTPUT
-          echo "❌ Data processing failed"
-        fi
-        
-        # 生成されたファイルの確認
-        echo "📁 Generated files:"
-        ls -la *.html *.json 2>/dev/null || echo "No HTML/JSON files found"
-        
-        # ファイルサイズの確認
-        if [ -f "index.html" ]; then
-          echo "📄 index.html: $(wc -l < index.html) lines, $(wc -c < index.html) bytes"
-        fi
-        
-        if [ -f "wbgt_summary.json" ]; then
-          echo "📊 Summary data:"
-          cat wbgt_summary.json | jq -r '.stations | to_entries[] | "  \(.key): \(.value.current_wbgt // "N/A")°C (\(.value.danger_level // "Unknown"))"' 2>/dev/null || echo "  Summary file exists but jq not available"
-        fi
-    
-    - name: Check file changes
-      id: check_changes
-      run: |
-        if [ -n "$(git status --porcelain)" ]; then
-          echo "changes=true" >> $GITHUB_OUTPUT
-          echo "📝 Files have been modified:"
-          git status --short
-        else
-          echo "changes=false" >> $GITHUB_OUTPUT
-          echo "📄 No file changes detected"
-        fi
-    
-    - name: Commit and push changes
-      if: steps.check_changes.outputs.changes == 'true'
-      run: |
-        # 生成されたファイルをステージング
-        git add *.html *.json
-        
-        # コミットメッセージの生成
-        CURRENT_TIME=$(date '+%Y-%m-%d %H:%M:%S JST')
-        
-        if [ -f "wbgt_summary.json" ]; then
-          # サマリー情報をコミットメッセージに含める
-          SUMMARY=$(cat wbgt_summary.json | jq -r '
-            "Generated: \(.generated_at // "unknown") | Stations: \(.total_stations // 0) | " +
-            (.stations | to_entries | map("  \(.key): \(.value.current_wbgt // "N/A")°C") | join(", "))
-          ' 2>/dev/null || echo "Summary parsing failed")
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Set timezone to JST
+        run: |
+          sudo timedatectl set-timezone Asia/Tokyo
+          echo "Current time (JST): $(date)"
+
+      - name: Determine execution mode
+        id: execution_mode
+        run: |
+          if [ "${{ github.event.inputs.test_mode }}" = "true" ]; then
+            echo "mode=--test" >> $GITHUB_OUTPUT
+            echo "description=Test mode (all stations)" >> $GITHUB_OUTPUT
+          elif [ -n "${{ github.event.inputs.specific_station }}" ]; then
+            echo "mode=--test-${{ github.event.inputs.specific_station }}" >> $GITHUB_OUTPUT
+            echo "description=Test mode (${{ github.event.inputs.specific_station }})" >> $GITHUB_OUTPUT
+          else
+            echo "mode=" >> $GITHUB_OUTPUT
+            echo "description=Normal execution" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Process WBGT data
+        run: |
+          echo "🚀 Starting WBGT data processing..."
+          echo "Execution mode: ${{ steps.execution_mode.outputs.description }}"
+          python wbgt_processor.py ${{ steps.execution_mode.outputs.mode }}
+          echo "✅ Data processing completed"
+
+      - name: Display generated files
+        run: |
+          echo "📁 Generated files:"
+          ls -la *.html *.json 2>/dev/null || echo "No HTML/JSON files found"
           
-          # ヒアドキュメントを使用してコミットメッセージを作成
-          git commit -m "$(cat << EOF
-🌡️ Update WBGT data - $CURRENT_TIME
+          if [ -f "index.html" ]; then
+            echo "📄 index.html: $(wc -l < index.html) lines, $(wc -c < index.html) bytes"
+          fi
+          
+          if [ -f "wbgt_summary.json" ]; then
+            echo "📊 Summary data available"
+          fi
 
-$SUMMARY
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet HEAD -- *.html *.json; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "📄 No changes detected"
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "📝 Changes detected:"
+            git diff --name-only HEAD -- *.html *.json
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add *.html *.json
+          
+          # コミットメッセージに日本時間を使用
+          JST_TIME=$(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S JST')
+          EXECUTION_MODE="${{ steps.execution_mode.outputs.description }}"
+          
+          git commit -m "🌡️ Update WBGT data - ${JST_TIME}
 
 Auto-generated by GitHub Actions
-Execution mode: ${{ steps.execution_mode.outputs.description }}
+Execution mode: ${EXECUTION_MODE}
 Workflow: ${{ github.workflow }}
-Run: ${{ github.run_number }}
-EOF
-)"
-        else
-          # ヒアドキュメントを使用してコミットメッセージを作成
-          git commit -m "$(cat << EOF
-🌡️ Update WBGT data - $CURRENT_TIME
+Run: ${{ github.run_number }}"
+          
+          git push
+          echo "✅ Changes committed and pushed"
 
-Auto-generated by GitHub Actions
-Execution mode: ${{ steps.execution_mode.outputs.description }}
-Workflow: ${{ github.workflow }}
-Run: ${{ github.run_number }}
-EOF
-)"
-        fi
-        
-        # プッシュ（リトライ機能付き）
-        for i in {1..3}; do
-          if git push; then
-            echo "✅ Successfully pushed changes (attempt $i)"
-            break
-          else
-            echo "⚠️ Push failed (attempt $i), retrying in 5 seconds..."
-            sleep 5
-            git pull --rebase origin main || true
-          fi
-        done
-    
-    - name: Setup Pages
-      if: steps.process_data.outputs.success == 'true' && steps.check_changes.outputs.changes == 'true'
-      uses: actions/configure-pages@v3
-    
-    - name: Upload to GitHub Pages
-      if: steps.process_data.outputs.success == 'true' && steps.check_changes.outputs.changes == 'true'
-      uses: actions/upload-pages-artifact@v2
-      with:
-        path: '.'
-        retention-days: 30
-    
-    - name: Deploy to GitHub Pages
-      if: steps.process_data.outputs.success == 'true' && steps.check_changes.outputs.changes == 'true'
-      id: deployment
-      uses: actions/deploy-pages@v2
-    
-    - name: Create error report
-      if: steps.process_data.outputs.success == 'false'
-      run: |
-        echo "📋 Creating error report..."
-        
-        ERROR_TIME=$(date '+%Y-%m-%d %H:%M:%S JST')
-        
-        # エラーレポートの生成
-        cat > error_summary.md << EOF
-        # WBGT Data Processing Error Report
-        
-        **Time:** $ERROR_TIME  
-        **Workflow:** ${{ github.workflow }}  
-        **Run Number:** ${{ github.run_number }}  
-        **Execution Mode:** ${{ steps.execution_mode.outputs.description }}  
-        **Trigger:** ${{ github.event_name }}
-        
-        ## Error Details
-        
-        The WBGT data processing script failed to complete successfully.
-        
-        ## Generated Files Status
-        
-        $(if [ -f "index.html" ]; then echo "- ✅ index.html: $(wc -c < index.html) bytes"; else echo "- ❌ index.html: Not generated"; fi)
-        $(if [ -f "wbgt_summary.json" ]; then echo "- ✅ wbgt_summary.json: $(wc -c < wbgt_summary.json) bytes"; else echo "- ❌ wbgt_summary.json: Not generated"; fi)
-        $(if [ -f "tateyama.html" ]; then echo "- ✅ tateyama.html: $(wc -c < tateyama.html) bytes"; else echo "- ❌ tateyama.html: Not generated"; fi)
-        $(if [ -f "ishinomaki.html" ]; then echo "- ✅ ishinomaki.html: $(wc -c < ishinomaki.html) bytes"; else echo "- ❌ ishinomaki.html: Not generated"; fi)
-        $(if [ -f "error_report.json" ]; then echo "- ⚠️ error_report.json: Generated by script"; else echo "- ❌ error_report.json: Not generated"; fi)
-        
-        ## System Information
-        
-        - **Python Version:** $(python --version)
-        - **Runner OS:** ${{ runner.os }}
-        - **Current Directory:** $(pwd)
-        - **Available Space:** $(df -h . | tail -1 | awk '{print $4}')
-        
-        ## Next Steps
-        
-        1. Check the workflow logs for detailed error messages
-        2. Verify network connectivity to data sources
-        3. Confirm data source API availability
-        4. Check for any breaking changes in dependencies
-        
-        EOF
-        
-        echo "📧 Error report created"
-        cat error_summary.md
-    
-    - name: Upload error artifacts
-      if: failure()
-      uses: actions/upload-artifact@v3
-      with:
-        name: error-logs-${{ github.run_number }}
-        path: |
-          error_summary.md
-          error_report.json
-          *.log
-        retention-days: 7
-        if-no-files-found: ignore
-    
-    - name: Notify completion
-      run: |
-        echo "🏁 Workflow completed"
-        echo "Success: ${{ steps.process_data.outputs.success }}"
-        echo "Changes: ${{ steps.check_changes.outputs.changes }}"
-        echo "Execution mode: ${{ steps.execution_mode.outputs.description }}"
-        
-        if [ "${{ steps.process_data.outputs.success }}" = "true" ]; then
-          echo "✅ WBGT data processing completed successfully"
-          if [ "${{ steps.check_changes.outputs.changes }}" = "true" ]; then
-            echo "📤 Data has been updated and deployed"
-          else
-            echo "📄 No data changes detected"
-          fi
-        else
-          echo "❌ WBGT data processing failed"
-          echo "📋 Error report and logs have been uploaded as artifacts"
-        fi
+      - name: Deploy to GitHub Pages
+        if: steps.check_changes.outputs.changes == 'true'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: gh-pages
+          force_orphan: false
+          enable_jekyll: false
 
-  # 週次ヘルスチェックジョブ
-  health-check:
-    runs-on: ubuntu-latest
-    if: |
-      (github.event_name == 'schedule' && github.event.schedule == '0 0 * * 0') ||
-      github.event.inputs.health_check == 'true'
-    
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    
-    - name: Health check
-      run: |
-        echo "🏥 Weekly health check"
-        echo "Repository: ${{ github.repository }}"
-        echo "Last run: $(date)"
-        
-        # ファイルの存在確認
-        echo "📁 File status:"
-        for file in index.html wbgt_summary.json tateyama.html ishinomaki.html; do
-          if [ -f "$file" ]; then
-            # Linux環境での stat コマンド使用
-            SIZE=$(stat -c%s "$file" 2>/dev/null || echo "unknown")
-            MODIFIED=$(stat -c%y "$file" 2>/dev/null || echo "unknown")
-            echo "  ✅ $file: $SIZE bytes, modified $MODIFIED"
-          else
-            echo "  ❌ $file: Missing"
-          fi
-        done
-        
-        # 過去1週間のワークフロー実行統計（概算）
-        echo "📊 Estimated weekly statistics:"
-        echo "  - Scheduled runs: ~49 (7 times per day)"
-        echo "  - Success rate target: >95%"
-        echo "  - Coverage: JST 9:00-21:00 daily"
+      - name: Deployment summary
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          echo "🚀 GitHub Pages deployment completed"
+          echo "📱 Dashboard URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+
+      - name: No changes summary
+        if: steps.check_changes.outputs.changes == 'false'
+        run: |
+          echo "📊 No data changes detected, skipping deployment"
+          echo "🔄 Next execution: 2 hours later"
