@@ -1,7 +1,7 @@
 {
   "error": true,
-  "error_message": "name 'generate_alert_message' is not defined",
-  "timestamp": "2025-07-01T13:00:17.774291",
+  "error_message": "name 'station_name' is not defined",
+  "timestamp": "2025-07-01T13:33:46.011376",
   "partial_success": [
     "ishinomaki",
     "tateyama"
