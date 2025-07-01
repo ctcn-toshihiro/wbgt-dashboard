@@ -843,7 +843,7 @@ def generate_alert_message(wbgt_data, station_name):
 
     now = datetime.now()
     target_time = (now + timedelta(hours=2)).replace(minute=0, second=0, microsecond=0)
-    threshold = 25.0
+    threshold = 20.0
 
     # 2時間後のインデックスを探す
     start_index = next(
