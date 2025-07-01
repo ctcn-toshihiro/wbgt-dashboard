@@ -822,22 +822,20 @@ def create_summary_json():
     return summary_data
 
 
-# def check_update_time():
-#    """更新時刻をチェック（JST 9:00-21:00 の間のみ実行）"""
-#    now = datetime.now()
-#    hour = now.hour
-#
-#    print(f"⏰ 現在時刻: {now.strftime('%Y年%m月%d日 %H:%M:%S')} JST")
-#
-#    if 9 <= hour <= 21:
-#        print("  ✅ 更新時間内です（JST 9:00-21:00）")
-#        return True
-#    else:
-#        print("  ⏸️ 更新時間外です（JST 9:00-21:00 以外）")
-#        print("  ℹ️ 夜間の更新はスキップされます")
-#        return False
 def check_update_time():
-    return True  # ← テスト用に常にTrueを返す
+    """更新時刻をチェック（JST 9:00-21:00 の間のみ実行）"""
+    now = datetime.now()
+    hour = now.hour
+
+    print(f"⏰ 現在時刻: {now.strftime('%Y年%m月%d日 %H:%M:%S')} JST")
+
+    if 9 <= hour <= 21:
+        print("  ✅ 更新時間内です（JST 9:00-21:00）")
+        return True
+    else:
+        print("  ⏸️ 更新時間外です（JST 9:00-21:00 以外）")
+        print("  ℹ️ 夜間の更新はスキップされます")
+        return False
 
 
 def generate_alert_message(wbgt_data, station_name):
@@ -845,7 +843,7 @@ def generate_alert_message(wbgt_data, station_name):
 
     now = datetime.now()
     target_time = (now + timedelta(hours=2)).replace(minute=0, second=0, microsecond=0)
-    threshold = 20.0
+    threshold = 28.0
 
     # 2時間後のインデックスを探す
     start_index = next(
