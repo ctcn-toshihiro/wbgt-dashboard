@@ -974,11 +974,11 @@ if __name__ == "__main__":
         elif sys.argv[1] == "--help":
             print("WBGT データ処理スクリプト")
             print("使用方法:")
-            print("  python script.py              # 通常実行")
-            print("  python script.py --test       # 全地点テスト")
-            print("  python script.py --test-ishinomaki # 大阪のみテスト")
-            print("  python script.py --test-tateyama # 東京のみテスト")
-            print("  python script.py --help       # ヘルプ表示")
+            print("  python wbgt_processor.py              # 通常実行")
+            print("  python wbgt_processor.py --test       # 全地点テスト")
+            print("  python wbgt_processor.py --test-ishinomaki # 大阪のみテスト")
+            print("  python wbgt_processor.py --test-tateyama # 東京のみテスト")
+            print("  python wbgt_processor.py --help       # ヘルプ表示")
         else:
             print(f"❌ 無効なオプション: {sys.argv[1]}")
             print("--help でヘルプを表示")
