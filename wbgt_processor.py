@@ -838,6 +838,48 @@ def check_update_time():
         return False
 
 
+def generate_alert_message(wbgt_data, station_name):
+    from datetime import datetime, timedelta
+
+    now = datetime.now()
+    target_time = (now + timedelta(hours=2)).replace(minute=0, second=0, microsecond=0)
+    threshold = 28.0
+
+    # 2時間後のインデックスを探す
+    start_index = next(
+        (
+            i
+            for i, d in enumerate(wbgt_data)
+            if datetime.fromisoformat(d["time"]) == target_time
+        ),
+        None,
+    )
+    if start_index is None or wbgt_data[start_index]["wbgt"] < threshold:
+        return ""
+
+    # 警戒レベル継続時間を調べる
+    duration = 0
+    recovery_time = None
+    for i in range(start_index, len(wbgt_data)):
+        if wbgt_data[i]["wbgt"] >= threshold:
+            duration += 1
+        else:
+            recovery_time = wbgt_data[i]["time"]
+            recovery_value = wbgt_data[i]["wbgt"]
+            break
+
+    start_time = wbgt_data[start_index]["time"][-8:-3]
+    end_time = recovery_time[-8:-3] if recovery_time else "未定"
+    hours = duration * 3
+
+    msg = f"📍 {station_name}\n"
+    msg += f"🔺 2時間後（{start_time}）にWBGTが{wbgt_data[start_index]['wbgt']:.1f}℃に達する見込みです。\n"
+    msg += f"🕒 警戒レベルは約{hours}時間（{start_time}〜{end_time}）続く見込みです。\n"
+    if recovery_time:
+        msg += f"🔻 {end_time}にはWBGTが{recovery_value:.1f}℃に下がり、通常レベルに戻る見込みです。\n"
+    return msg
+
+
 def main():
     """メイン処理"""
     print("🚀 WBGT データ処理スクリプト開始")
