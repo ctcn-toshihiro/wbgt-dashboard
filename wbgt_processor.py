@@ -567,7 +567,10 @@ def process_station(station_key, station_config):
             print(f"    - データ更新: {wbgt_data['update_time']}")
             print(f"    - データ件数: {len(wbgt_data['data'])} 件")
 
-            return True
+            alert_message = generate_alert_message(wbgt_data["data"], station_name)
+
+            return True, alert_message
+            # return True
         else:
             print(f"  ❌ {station_name}: HTML生成に失敗")
             return False
@@ -849,11 +852,19 @@ def main():
         print(f"📍 処理対象地点: {len(STATIONS)} 地点")
 
         # 各地点の処理
+        alert_messages = []
         success_count = 0
+        # for station_key, station_config in STATIONS.items():
+        #    print(f"\n{'='*30}")
+        #    if process_station(station_key, station_config):
+        #        success_count += 1
         for station_key, station_config in STATIONS.items():
             print(f"\n{'='*30}")
-            if process_station(station_key, station_config):
+            success, alert_message = process_station(station_key, station_config)
+            if success:
                 success_count += 1
+                if alert_message:
+                    alert_messages.append(alert_message)
 
         print(f"\n{'='*50}")
         print(f"📊 処理結果: {success_count}/{len(STATIONS)} 地点成功")
@@ -865,6 +876,22 @@ def main():
         # 概要データ生成
         print(f"\n{'='*30}")
         summary_data = create_summary_json()
+
+        # 通知メッセージ出力
+        if alert_messages:
+            print(f"\n{'='*30}")
+            print("📣 警戒レベル予測通知を生成中...")
+
+            with open("alert_message.txt", "w", encoding="utf-8") as f:
+                f.write(
+                    f"🌡️ WBGT予測通知（{datetime.now().strftime('%Y-%m-%d %H:%M')} 時点）\n\n"
+                )
+                f.write("\n".join(alert_messages))
+                f.write(
+                    "\n📊 ダッシュボード：https://ctcn-toshihiro.github.io/wbgt-dashboard/\n"
+                )
+
+            print("✅ 通知メッセージを alert_message.txt に出力しました")
 
         # 処理結果の表示
         print(f"\n{'='*50}")
