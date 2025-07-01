@@ -1,32 +1,35 @@
 name: WBGT Data Processing
 
-# 同時実行制御を追加
+permissions:
+  contents: write
+  pages:   write
+  id-token: write
+
 concurrency:
-  group: wbgt-processing-${{ github.ref }}
+  group: 'wbgt-processing-${{ github.ref }}'
   cancel-in-progress: true
 
 on:
   schedule:
-    # JST 9時から21時まで2時間毎に実行 (UTC: 0, 2, 4, 6, 8, 10, 12時)
-    # JST換算: 9, 11, 13, 15, 17, 19, 21時
-    - cron: "0 0,2,4,6,8,10,12 * * *"
+    - cron: '0 0,2,4,6,8,10,12 * * *'  # UTC 0,2,4…12 → JST 9～21時に2時間毎
   push:
-    branches: [main]
-  workflow_dispatch: # 手動実行も可能
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   update-wbgt:
     runs-on: ubuntu-latest
-    timeout-minutes: 10 # タイムアウト設定
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -42,14 +45,14 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --quiet HEAD -- *.html *.json; then
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          if git diff --quiet HEAD -- '*.html' '*.json'; then
             echo "changes=false" >> $GITHUB_OUTPUT
             echo "📋 変更なし: データファイルに変更はありません"
           else
             echo "changes=true" >> $GITHUB_OUTPUT
             echo "📝 変更検出: データファイルが更新されました"
-            echo "変更されたファイル:"
-            git diff --name-only HEAD -- *.html *.json
+            git diff --name-only HEAD -- '*.html' '*.json'
           fi
 
       - name: Display file sizes
@@ -59,30 +62,26 @@ jobs:
 
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add *.html *.json
-
-          # コミットメッセージに日本時間を使用
           JST_TIME=$(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S JST')
           git commit -m "🌡️ Auto-update WBGT data - ${JST_TIME}"
           git push
-
-          echo "✅ 変更をコミット・プッシュしました"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to GitHub Pages
         if: steps.check_changes.outputs.changes == 'true'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
+          publish_dir: './'
           publish_branch: gh-pages
-          force_orphan: false # 履歴を保持
-          enable_jekyll: false # Jekyllを無効化
-          cname: false # CNAMEファイルを作成しない
+          force_orphan: false
+          enable_jekyll: false
+          cname: ''
 
       - name: Deployment summary
         if: steps.check_changes.outputs.changes == 'true'
