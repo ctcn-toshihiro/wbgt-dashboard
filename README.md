@@ -55,6 +55,5 @@ wbgt-dashboard/
 
 **インデックスページ（地点選択）**
 
-```
-https://ctcn-toshihiro.github.io/wbgt-dashboard/
-```
+[https://ctcn-toshihiro.github.io/wbgt-dashboard/](https://ctcn-toshihiro.github.io/wbgt-dashboard/)  
+
