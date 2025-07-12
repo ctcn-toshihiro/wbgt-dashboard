@@ -3,7 +3,7 @@
 
 ### 準備するもの
 
-- GitHub アカウント（無料）
+- GitHub アカウント
 - ブラウザ
 
 ### セットアップ手順
@@ -30,24 +30,24 @@ wbgt-dashboard/
 
 #### 2. GitHub Pages を有効化
 
-1. リポジトリの「Settings」タブをクリック
-2. 左サイドバーの「Pages」をクリック
-3. Source を「Deploy from a branch」に設定
-4. Branch を「gh-pages」に設定
-5. 「Save」をクリック
+1. リポジトリの `Settings` タブをクリック
+2. 左サイドバーの `Pages` をクリック
+3. Source を `Deploy from a branch` に設定
+4. Branch を `gh-pages` に設定
+5. `Save` をクリック
 
 #### 3. GitHub Actions の権限設定
 
-1. リポジトリの「Settings」タブをクリック
-2. 左サイドバーの「Actions」→「General」をクリック
-3. 「Workflow permissions」で「Read and write permissions」を選択
-4. 「Save」をクリック
+1. リポジトリの `Settings` タブをクリック
+2. 左サイドバーの `Actions` → `General` をクリック
+3. `Workflow permissions` で `Read and write permissions` を選択
+4. `Save` をクリック
 
 #### 4. 初回実行
 
-1. リポジトリの「Actions」タブをクリック
-2. 「Update WBGT Dashboard」ワークフローをクリック
-3. 「Run workflow」ボタンで手動実行
+1. リポジトリの `Actions` タブをクリック
+2. `Update WBGT Dashboard` ワークフローをクリック
+3. `Run workflow` ボタンで手動実行
 
 ### 完成！
 
