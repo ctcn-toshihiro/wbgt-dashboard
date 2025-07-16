@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-07-16T13:56:27.162944",
+  "generated_at": "2025-07-16T14:57:11.159374",
   "stations": {
     "ishinomaki": {
       "name": "石巻",
@@ -8,7 +8,7 @@
       "max_wbgt": 28.0,
       "min_wbgt": 21.0,
       "danger_level": "注意",
-      "update_time": "2025/07/16 22:25",
+      "update_time": "2025/07/16 23:25",
       "data_points": 17,
       "html_file": "ishinomaki.html"
     },
@@ -19,7 +19,7 @@
       "max_wbgt": 30.0,
       "min_wbgt": 23.0,
       "danger_level": "警戒",
-      "update_time": "2025/07/16 22:25",
+      "update_time": "2025/07/16 23:25",
       "data_points": 17,
       "html_file": "tateyama.html"
     }
