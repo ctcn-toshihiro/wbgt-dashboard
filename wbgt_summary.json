@@ -1,14 +1,14 @@
 {
-  "generated_at": "2025-08-04T14:01:59.034936",
+  "generated_at": "2025-08-04T14:57:11.990462",
   "stations": {
     "ishinomaki": {
       "name": "石巻",
       "station_id": "34292",
-      "current_wbgt": 26.0,
+      "current_wbgt": 25.0,
       "max_wbgt": 30.0,
       "min_wbgt": 24.0,
       "danger_level": "警戒",
-      "update_time": "2025/08/04 22:25",
+      "update_time": "2025/08/04 23:25",
       "data_points": 17,
       "html_file": "ishinomaki.html"
     },
@@ -19,7 +19,7 @@
       "max_wbgt": 33.0,
       "min_wbgt": 26.0,
       "danger_level": "警戒",
-      "update_time": "2025/08/04 22:25",
+      "update_time": "2025/08/04 23:25",
       "data_points": 17,
       "html_file": "tateyama.html"
     }
