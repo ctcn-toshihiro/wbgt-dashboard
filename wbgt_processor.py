@@ -13,6 +13,12 @@ import traceback
 
 # 観測地点の設定
 STATIONS = {
+    "kushiro": {
+        "station_id": "47412",
+        "name": "釧路",
+        "filename": "kushiro.html",
+        "json_filename": "wbgt_data_kushiro.json",
+    },
     "ishinomaki": {
         "station_id": "34292",
         "name": "石巻",
@@ -342,10 +348,11 @@ def generate_html(wbgt_data, station_name, station_key):
         
         <div class="navigation">
             <strong>観測地点切替:</strong><br>
-            <a href="ishinomaki.html" class="nav-button{'current' if station_key == 'tateyama' else ''}">石巻</a>
-            <a href="tateyama.html" class="nav-button{'current' if station_key == 'ishinomaki' else ''}">館山</a>
+            <a href="kushiro.html" class="nav-button">釧路</a>
+            <a href="ishinomaki.html" class="nav-button">石巻</a>
+            <a href="tateyama.html" class="nav-button">館山</a>
         </div>
-        
+
         <div class="location-info">
             <div class="location-name">{station_name}</div>
             <div>観測地点コード: {wbgt_data['station_id']}</div>
