@@ -1,6 +1,17 @@
 {
-  "generated_at": "2025-08-17T06:37:54.149800",
+  "generated_at": "2025-08-17T06:56:16.183686",
   "stations": {
+    "kushiro": {
+      "name": "釧路",
+      "station_id": "19432",
+      "current_wbgt": 22.0,
+      "max_wbgt": 27.0,
+      "min_wbgt": 19.0,
+      "danger_level": "注意",
+      "update_time": "2025/08/17 15:25",
+      "data_points": 19,
+      "html_file": "kushiro.html"
+    },
     "ishinomaki": {
       "name": "石巻",
       "station_id": "34292",
@@ -24,6 +35,6 @@
       "html_file": "tateyama.html"
     }
   },
-  "total_stations": 2,
+  "total_stations": 3,
   "update_schedule": "JST 9:00-21:00, every 2 hours"
 }
