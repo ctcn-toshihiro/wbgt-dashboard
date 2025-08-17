@@ -1,164 +1,156 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WBGT 予報ダッシュボード - 地点選択</title>
     <style>
-      body {
-        font-family: "Helvetica Neue", Arial, sans-serif;
-        margin: 0;
-        padding: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        color: #333;
-      }
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        text-align: center;
-      }
-      .header {
-        margin-bottom: 40px;
-      }
-      .title {
-        font-size: 2.5em;
-        font-weight: bold;
-        color: #2c3e50;
-        margin-bottom: 15px;
-      }
-      .subtitle {
-        font-size: 1.2em;
-        color: #7f8c8d;
-        margin-bottom: 20px;
-      }
-      .description {
-        font-size: 1em;
-        color: #5a6c7d;
-        line-height: 1.6;
-        margin-bottom: 40px;
-      }
-      .stations-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-        margin-bottom: 40px;
-      }
-      .station-card {
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        padding: 30px;
-        border-radius: 15px;
-        border-left: 5px solid #007bff;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        color: inherit;
-        display: block;
-      }
-      .station-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-      }
-      .station-name {
-        font-size: 1.5em;
-        font-weight: bold;
-        color: #2c3e50;
-        margin-bottom: 10px;
-      }
-      .station-id {
-        font-size: 0.9em;
-        color: #6c757d;
-        margin-bottom: 15px;
-      }
-      .station-status {
-        display: inline-block;
-        padding: 5px 15px;
-        background: #28a745;
-        color: white;
-        border-radius: 20px;
-        font-size: 0.8em;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      .footer {
-        margin-top: 40px;
-        padding-top: 20px;
-        border-top: 1px solid #dee2e6;
-        color: #6c757d;
-        font-size: 0.9em;
-      }
-      .auto-update-info {
-        background: #e8f5e8;
-        border: 1px solid #4caf50;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 30px;
-      }
-      .update-icon {
-        color: #4caf50;
-        font-size: 1.5em;
-        margin-bottom: 10px;
-      }
-      @media (max-width: 768px) {
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
         .container {
-          margin: 10px;
-          padding: 30px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .header {
+            margin-bottom: 40px;
         }
         .title {
-          font-size: 2em;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .description {
+            font-size: 1em;
+            color: #5a6c7d;
+            line-height: 1.6;
+            margin-bottom: 40px;
         }
         .stations-grid {
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
-      }
+        .station-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #007bff;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .station-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .station-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .station-id {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        .station-status {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #28a745;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        .auto-update-info {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .update-icon {
+            color: #4caf50;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 30px 20px;
+            }
+            .title {
+                font-size: 2em;
+            }
+            .stations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <div class="header">
-        <div class="title">WBGT 予報ダッシュボード</div>
-        <div class="subtitle">熱中症予防情報 - 観測地点選択</div>
-        <div class="description">
-          環境省の WBGT
-          データを基に、各観測地点の熱中症予防情報を提供します。<br />
-          下記から確認したい地点を選択してください。
+        <div class="header">
+            <div class="title">WBGT 予報ダッシュボード</div>
+            <div class="subtitle">熱中症予防情報 - 観測地点選択</div>
+            <div class="description">
+                環境省の WBGT データを基に、各観測地点の熱中症予防情報を提供します。<br>
+                下記から確認したい地点を選択してください。
+            </div>
         </div>
-      </div>
-
-      <div class="auto-update-info">
-        <div class="update-icon">🔄</div>
-        <strong>自動更新システム</strong><br />
-        JST 9:00-21:00 の間、2時間毎にデータを自動更新しています
-      </div>
-
-      <div class="stations-grid">
-        <a href="kushiro.html" class="station-card">
-          <div class="station-name">釧路</div>
-          <div class="station-id">観測地点コード: 47412</div>
-          <div class="station-status">運用中</div>
-        </a>
-        <a href="ishinomaki.html" class="station-card">
-          <div class="station-name">石巻</div>
-          <div class="station-id">観測地点コード: 34292</div>
-          <div class="station-status">運用中</div>
-        </a>
-        <a href="tateyama.html" class="station-card">
-          <div class="station-name">館山</div>
-          <div class="station-id">観測地点コード: 45401</div>
-          <div class="station-status">運用中</div>
-        </a>
-      </div>
-
-      <div class="footer">
-        <p>
-          ※このサイトは環境省「熱中症予防情報サイト」のデータを加工して作成しています
-        </p>
-        <p>※WBGT（湿球黒球温度）: 熱中症予防を目的とした暑さ指数</p>
-        <p>最終更新: 2025年08月17日 05:50:33</p>
-      </div>
+        
+        <div class="auto-update-info">
+            <div class="update-icon">🔄</div>
+            <strong>自動更新システム</strong><br>
+            JST 9:00-21:00 の間、2時間毎にデータを自動更新しています
+        </div>
+        
+        <div class="stations-grid">
+            <a href="ishinomaki.html" class="station-card">
+                <div class="station-name">石巻</div>
+                <div class="station-id">観測地点コード: 34292</div>
+                <div class="station-status">運用中</div>
+            </a>
+            <a href="tateyama.html" class="station-card">
+                <div class="station-name">館山</div>
+                <div class="station-id">観測地点コード: 45401</div>
+                <div class="station-status">運用中</div>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>※このサイトは環境省「熱中症予防情報サイト」のデータを加工して作成しています</p>
+            <p>※WBGT（湿球黒球温度）: 熱中症予防を目的とした暑さ指数</p>
+            <p>最終更新: 2025年08月17日 06:56:16</p>
+        </div>
     </div>
-  </body>
+</body>
 </html>
