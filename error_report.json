@@ -1,7 +1,7 @@
 {
   "error": true,
   "error_message": "cannot unpack non-iterable bool object",
-  "timestamp": "2025-08-17T06:42:32.622629",
+  "timestamp": "2025-08-17T06:43:54.187817",
   "partial_success": [
     "ishinomaki",
     "tateyama"
