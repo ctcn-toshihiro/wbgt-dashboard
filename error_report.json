@@ -1,7 +1,7 @@
 {
   "error": true,
-  "error_message": "name 'station_name' is not defined",
-  "timestamp": "2025-07-01T13:33:46.011376",
+  "error_message": "cannot unpack non-iterable bool object",
+  "timestamp": "2025-08-17T06:39:30.672311",
   "partial_success": [
     "ishinomaki",
     "tateyama"
