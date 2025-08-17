@@ -727,6 +727,11 @@ def create_index_html():
         </div>
         
         <div class="stations-grid">
+            <a href="kushiro.html" class="station-card">
+                <div class="station-name">釧路</div>
+                <div class="station-id">観測地点コード: 19432</div>
+                <div class="station-status">運用中</div>
+            </a>
             <a href="ishinomaki.html" class="station-card">
                 <div class="station-name">石巻</div>
                 <div class="station-id">観測地点コード: 34292</div>
