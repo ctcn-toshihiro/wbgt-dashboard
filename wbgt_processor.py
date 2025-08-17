@@ -14,7 +14,7 @@ import traceback
 # 観測地点の設定
 STATIONS = {
     "kushiro": {
-        "station_id": "47412",
+        "station_id": "19432",
         "name": "釧路",
         "filename": "kushiro.html",
         "json_filename": "wbgt_data_kushiro.json",
