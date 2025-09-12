@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-09-12T13:05:25.173322",
+  "generated_at": "2025-09-12T13:48:41.587179",
   "stations": {
     "kushiro": {
       "name": "釧路",
@@ -8,7 +8,7 @@
       "max_wbgt": 22.0,
       "min_wbgt": 16.0,
       "danger_level": "注意",
-      "update_time": "2025/09/12 21:25",
+      "update_time": "2025/09/12 22:25",
       "data_points": 17,
       "html_file": "kushiro.html"
     },
@@ -19,7 +19,7 @@
       "max_wbgt": 27.0,
       "min_wbgt": 20.0,
       "danger_level": "注意",
-      "update_time": "2025/09/12 21:25",
+      "update_time": "2025/09/12 22:25",
       "data_points": 17,
       "html_file": "ishinomaki.html"
     },
@@ -30,7 +30,7 @@
       "max_wbgt": 30.0,
       "min_wbgt": 24.0,
       "danger_level": "注意",
-      "update_time": "2025/09/12 21:25",
+      "update_time": "2025/09/12 22:25",
       "data_points": 17,
       "html_file": "tateyama.html"
     }
