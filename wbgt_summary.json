@@ -1,36 +1,36 @@
 {
-  "generated_at": "2025-10-10T06:54:08.626377",
+  "generated_at": "2025-10-10T07:49:05.933494",
   "stations": {
     "kushiro": {
       "name": "釧路",
       "station_id": "19432",
-      "current_wbgt": 8.0,
+      "current_wbgt": 9.0,
       "max_wbgt": 14.0,
       "min_wbgt": 4.0,
       "danger_level": "注意",
-      "update_time": "2025/10/10 15:25",
+      "update_time": "2025/10/10 16:25",
       "data_points": 19,
       "html_file": "kushiro.html"
     },
     "ishinomaki": {
       "name": "石巻",
       "station_id": "34292",
-      "current_wbgt": 15.0,
+      "current_wbgt": 16.0,
       "max_wbgt": 18.0,
       "min_wbgt": 9.0,
       "danger_level": "注意",
-      "update_time": "2025/10/10 15:25",
+      "update_time": "2025/10/10 16:25",
       "data_points": 19,
       "html_file": "ishinomaki.html"
     },
     "tateyama": {
       "name": "館山",
       "station_id": "45401",
-      "current_wbgt": 18.0,
+      "current_wbgt": 17.0,
       "max_wbgt": 26.0,
       "min_wbgt": 16.0,
       "danger_level": "注意",
-      "update_time": "2025/10/10 15:25",
+      "update_time": "2025/10/10 16:25",
       "data_points": 19,
       "html_file": "tateyama.html"
     }
