@@ -145,21 +145,25 @@ def generate_html(wbgt_data, station_name, station_key):
 
     # 危険レベルの判定
     if current_wbgt >= 31:
-        danger_level = "運動中止"
+        danger_level = "運動は原則中止"
         danger_color = "#800080"
-        danger_message = "外出を控え、涼しい場所で過ごしましょう"
+        danger_message = "特別の場合以外は運動を中止する"
     elif current_wbgt >= 28:
         danger_level = "厳重警戒"
         danger_color = "#FF0000"
-        danger_message = "激しい運動は避け、こまめに水分補給を"
+        danger_message = "激しい運動や持久走などは避け、10〜20分おきに休憩・水分補給を"
     elif current_wbgt >= 25:
         danger_level = "警戒"
         danger_color = "#FF6600"
-        danger_message = "運動時は定期的に休憩を取りましょう"
-    else:
+        danger_message = "積極的に休憩をとり、適宜水分・塩分を補給する"
+    elif current_wbgt >= 21:
         danger_level = "注意"
         danger_color = "#0066CC"
-        danger_message = "適度な水分補給を心がけましょう"
+        danger_message = "熱中症の兆候に注意し、運動の合間に水分・塩分を補給する"
+    else:
+        danger_level = "ほぼ安全"
+        danger_color = "#28A745"
+        danger_message = "適宜水分・塩分の補給を行う"
 
     # JavaScriptデータを準備
     chart_data = json.dumps(wbgt_data["data"])
@@ -403,20 +407,24 @@ def generate_html(wbgt_data, station_name, station_key):
         
         <div class="legend">
             <div class="legend-item">
+                <div class="legend-color" style="background-color: #28A745;"></div>
+                <span>ほぼ安全 (21未満)</span>
+            </div>
+            <div class="legend-item">
                 <div class="legend-color" style="background-color: #0066CC;"></div>
-                <span>注意 (～24°C)</span>
+                <span>注意 (21〜25未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #FF6600;"></div>
-                <span>警戒 (25-27°C)</span>
+                <span>警戒 (25〜28未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #FF0000;"></div>
-                <span>厳重警戒 (28-30°C)</span>
+                <span>厳重警戒 (28〜31未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #800080;"></div>
-                <span>運動中止 (31°C～)</span>
+                <span>運動は原則中止 (31以上)</span>
             </div>
         </div>
         
@@ -812,13 +820,15 @@ def create_summary_json():
 
                     # 危険レベルの判定
                     if current_wbgt >= 31:
-                        danger_level = "運動中止"
+                        danger_level = "運動は原則中止"
                     elif current_wbgt >= 28:
                         danger_level = "厳重警戒"
                     elif current_wbgt >= 25:
                         danger_level = "警戒"
-                    else:
+                    elif current_wbgt >= 21:
                         danger_level = "注意"
+                    else:
+                        danger_level = "ほぼ安全"
 
                     summary_data["stations"][station_key] = {
                         "name": station_config["name"],
