@@ -1,599 +1,390 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WBGT 予報ダッシュボード - 石巻</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-      body {
-        font-family: "Helvetica Neue", Arial, sans-serif;
-        margin: 0;
-        padding: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        color: #333;
-      }
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      }
-      .header {
-        text-align: center;
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-        border-bottom: 3px solid #f0f0f0;
-      }
-      .title {
-        font-size: 2.5em;
-        font-weight: bold;
-        color: #2c3e50;
-        margin-bottom: 10px;
-      }
-      .subtitle {
-        font-size: 1.2em;
-        color: #7f8c8d;
-      }
-      .location-info {
-        background: #e8f4f8;
-        border: 1px solid #3498db;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      .location-name {
-        font-size: 1.3em;
-        font-weight: bold;
-        color: #2980b9;
-      }
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-      }
-      .stat-card {
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        padding: 25px;
-        border-radius: 15px;
-        text-align: center;
-        border-left: 5px solid #007bff;
-        transition: transform 0.3s ease;
-      }
-      .stat-card:hover {
-        transform: translateY(-5px);
-      }
-      .stat-value {
-        font-size: 2.5em;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-      .stat-label {
-        font-size: 1.1em;
-        color: #6c757d;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      .danger-card {
-        background: #0066cc;
-        color: white;
-        padding: 25px;
-        border-radius: 15px;
-        text-align: center;
-        margin-bottom: 30px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      }
-      .danger-level {
-        font-size: 2em;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-      .danger-message {
-        font-size: 1.2em;
-        opacity: 0.9;
-      }
-      .chart-container {
-        position: relative;
-        height: 400px;
-        margin-bottom: 30px;
-        background: #f8f9fa;
-        border-radius: 15px;
-        padding: 20px;
-      }
-      .update-info {
-        text-align: center;
-        color: #6c757d;
-        font-size: 0.9em;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid #dee2e6;
-      }
-      .legend {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-      }
-      .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .legend-color {
-        width: 20px;
-        height: 4px;
-        border-radius: 2px;
-      }
-      .auto-update-status {
-        background: #e8f5e8;
-        border: 1px solid #4caf50;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      .auto-update-status .status-icon {
-        color: #4caf50;
-        font-size: 1.2em;
-        margin-right: 8px;
-      }
-      .navigation {
-        background: #f8f9fa;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      .nav-button {
-        display: inline-block;
-        padding: 10px 20px;
-        margin: 0 10px;
-        background: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background 0.3s ease;
-      }
-      .nav-button:hover {
-        background: #0056b3;
-      }
-      .nav-button.current {
-        background: #28a745;
-      }
-      @media (max-width: 768px) {
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
         .container {
-          margin: 10px;
-          padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f0f0;
         }
         .title {
-          font-size: 2em;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+        .location-info {
+            background: #e8f4f8;
+            border: 1px solid #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .location-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2980b9;
         }
         .stats-grid {
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 5px solid #007bff;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 1.1em;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .danger-card {
+            background: #0066CC;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .danger-level {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .danger-message {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .update-info {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 4px;
+            border-radius: 2px;
+        }
+        .auto-update-status {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .auto-update-status .status-icon {
+            color: #4caf50;
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        .navigation {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
         }
         .nav-button {
-          display: block;
-          margin: 5px 0;
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
         }
-      }
+        .nav-button:hover {
+            background: #0056b3;
+        }
+        .nav-button.current {
+            background: #28a745;
+        }
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            .title {
+                font-size: 2em;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-button {
+                display: block;
+                margin: 5px 0;
+            }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <div class="header">
-        <div class="title">WBGT予報ダッシュボード</div>
-        <div class="subtitle">観測地点: 34292</div>
-      </div>
-
-      <div class="navigation">
-        <strong>観測地点切替:</strong><br />
-        <a href="abashiri.html" class="nav-button">網走</a>
-        <a href="kushiro.html" class="nav-button">釧路</a>
-        <a href="hachinohe.html" class="nav-button">八戸</a>
-        <a href="ishinomaki.html" class="nav-button">石巻</a>
-        <a href="tateyama.html" class="nav-button">館山</a>
-      </div>
-
-      <div class="location-info">
-        <div class="location-name">石巻</div>
-        <div>観測地点コード: 34292</div>
-      </div>
-
-      <div class="auto-update-status">
-        <span class="status-icon">🔄</span>
-        <strong>自動更新中:</strong> JST 9:00-21:00 の間、2
-        時間毎にデータを更新しています
-      </div>
-
-      <div class="danger-card">
-        <div class="danger-level">注意</div>
-        <div class="danger-message">適度な水分補給を心がけましょう</div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" style="color: #0066cc">16.0°C</div>
-          <div class="stat-label">現在の WBGT</div>
+        <div class="header">
+            <div class="title">WBGT予報ダッシュボード</div>
+            <div class="subtitle">観測地点: 34292</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" style="color: #dc3545">22.0°C</div>
-          <div class="stat-label">予報最高値</div>
+        
+        <div class="navigation">
+            <strong>観測地点切替:</strong><br>
+            <a href="abashiri.html" class="nav-button">網走</a>
+            <a href="kushiro.html" class="nav-button">釧路</a>
+            <a href="hachinohe.html" class="nav-button">八戸</a>
+            <a href="ishinomaki.html" class="nav-button">石巻</a>
+            <a href="tateyama.html" class="nav-button">館山</a>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" style="color: #28a745">9.0°C</div>
-          <div class="stat-label">予報最低値</div>
-        </div>
-      </div>
 
-      <div class="chart-container">
-        <canvas id="wbgtChart"></canvas>
-      </div>
-
-      <div class="legend">
-        <div class="legend-item">
-          <div class="legend-color" style="background-color: #0066cc"></div>
-          <span>注意 (～24°C)</span>
+        <div class="location-info">
+            <div class="location-name">石巻</div>
+            <div>観測地点コード: 34292</div>
         </div>
-        <div class="legend-item">
-          <div class="legend-color" style="background-color: #ff6600"></div>
-          <span>警戒 (25-27°C)</span>
+        
+        <div class="auto-update-status">
+            <span class="status-icon">🔄</span>
+            <strong>自動更新中:</strong> JST 9:00-21:00 の間、2 時間毎にデータを更新しています
         </div>
-        <div class="legend-item">
-          <div class="legend-color" style="background-color: #ff0000"></div>
-          <span>厳重警戒 (28-30°C)</span>
+        
+        <div class="danger-card">
+            <div class="danger-level">注意</div>
+            <div class="danger-message">適度な水分補給を心がけましょう</div>
         </div>
-        <div class="legend-item">
-          <div class="legend-color" style="background-color: #800080"></div>
-          <span>運動中止 (31°C～)</span>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" style="color: #0066CC;">16.0°C</div>
+                <div class="stat-label">現在の WBGT</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #dc3545;">22.0°C</div>
+                <div class="stat-label">予報最高値</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #28a745;">9.0°C</div>
+                <div class="stat-label">予報最低値</div>
+            </div>
         </div>
-      </div>
-
-      <div class="update-info">
-        <p>データ更新: 2026/05/02 10:25</p>
-        <p>最終生成: 2026年05月02日 01:47:48</p>
-        <p>※ JST 9:00-21:00 の間、2時間毎に自動更新されます</p>
-        <p>
-          ※環境省「熱中症予防情報サイト」（https://www.wbgt.env.go.jp/）の WBGT
-          データを加工して作成
-        </p>
-      </div>
+        
+        <div class="chart-container">
+            <canvas id="wbgtChart"></canvas>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #0066CC;"></div>
+                <span>注意 (～24°C)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FF6600;"></div>
+                <span>警戒 (25-27°C)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #FF0000;"></div>
+                <span>厳重警戒 (28-30°C)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #800080;"></div>
+                <span>運動中止 (31°C～)</span>
+            </div>
+        </div>
+        
+        <div class="update-info">
+            <p>データ更新: 2026/05/02 11:25</p>
+            <p>最終生成: 2026年05月02日 02:58:59</p>
+            <p>※ JST 9:00-21:00 の間、2時間毎に自動更新されます</p>
+            <p>※環境省「熱中症予防情報サイト」（https://www.wbgt.env.go.jp/）の WBGT データを加工して作成</p>
+        </div>
     </div>
 
     <script>
-      const data = [
-        {
-          time: "2026-05-02T12:00:00",
-          year: 2026,
-          month: 5,
-          day: 2,
-          hour: 12,
-          minute: 0,
-          wbgt: 16.0,
-        },
-        {
-          time: "2026-05-02T15:00:00",
-          year: 2026,
-          month: 5,
-          day: 2,
-          hour: 15,
-          minute: 0,
-          wbgt: 17.0,
-        },
-        {
-          time: "2026-05-02T18:00:00",
-          year: 2026,
-          month: 5,
-          day: 2,
-          hour: 18,
-          minute: 0,
-          wbgt: 11.0,
-        },
-        {
-          time: "2026-05-02T21:00:00",
-          year: 2026,
-          month: 5,
-          day: 2,
-          hour: 21,
-          minute: 0,
-          wbgt: 10.0,
-        },
-        {
-          time: "2026-05-03T00:00:00",
-          year: 2026,
-          month: 5,
-          day: 3,
-          hour: 0,
-          minute: 0,
-          wbgt: 10.0,
-        },
-        {
-          time: "2026-05-03T03:00:00",
-          year: 2026,
-          month: 5,
-          day: 3,
-          hour: 3,
-          minute: 0,
-          wbgt: 9.0,
-        },
-        {
-          time: "2026-05-03T06:00:00",
-          year: 2026,
-          month: 5,
-          day: 3,
-          hour: 6,
-          minute: 0,
-          wbgt: 11.0,
-        },
-        {
-          time: "2026-05-03T09:00:00",
-          year: 2026,
-          month: 5,
-          day: 3,
-          hour: 9,
-          minute: 0,
-          wbgt: 14.0,
-        },
-        {
-          time: "2026-05-03T12:00:00",
-          year: 2026,
-          month: 5,
-          day: 3,
-          hour: 12,
-          minute: 0,
-          wbgt: 16.0,
-        },
-        {
-          time: "2026-05-03T15:00:00",
-          year: 2026,
-          month: 5,
-          day: 3,
-          hour: 15,
-          minute: 0,
-          wbgt: 17.0,
-        },
-        {
-          time: "2026-05-03T18:00:00",
-          year: 2026,
-          month: 5,
-          day: 3,
-          hour: 18,
-          minute: 0,
-          wbgt: 15.0,
-        },
-        {
-          time: "2026-05-03T21:00:00",
-          year: 2026,
-          month: 5,
-          day: 3,
-          hour: 21,
-          minute: 0,
-          wbgt: 15.0,
-        },
-        {
-          time: "2026-05-04T00:00:00",
-          year: 2026,
-          month: 5,
-          day: 4,
-          hour: 0,
-          minute: 0,
-          wbgt: 14.0,
-        },
-        {
-          time: "2026-05-04T03:00:00",
-          year: 2026,
-          month: 5,
-          day: 4,
-          hour: 3,
-          minute: 0,
-          wbgt: 13.0,
-        },
-        {
-          time: "2026-05-04T06:00:00",
-          year: 2026,
-          month: 5,
-          day: 4,
-          hour: 6,
-          minute: 0,
-          wbgt: 14.0,
-        },
-        {
-          time: "2026-05-04T09:00:00",
-          year: 2026,
-          month: 5,
-          day: 4,
-          hour: 9,
-          minute: 0,
-          wbgt: 18.0,
-        },
-        {
-          time: "2026-05-04T12:00:00",
-          year: 2026,
-          month: 5,
-          day: 4,
-          hour: 12,
-          minute: 0,
-          wbgt: 22.0,
-        },
-        {
-          time: "2026-05-04T15:00:00",
-          year: 2026,
-          month: 5,
-          day: 4,
-          hour: 15,
-          minute: 0,
-          wbgt: 16.0,
-        },
-        {
-          time: "2026-05-04T18:00:00",
-          year: 2026,
-          month: 5,
-          day: 4,
-          hour: 18,
-          minute: 0,
-          wbgt: 13.0,
-        },
-        {
-          time: "2026-05-04T21:00:00",
-          year: 2026,
-          month: 5,
-          day: 4,
-          hour: 21,
-          minute: 0,
-          wbgt: 12.0,
-        },
-        {
-          time: "2026-05-05T00:00:00",
-          year: 2026,
-          month: 5,
-          day: 5,
-          hour: 0,
-          minute: 0,
-          wbgt: 11.0,
-        },
-      ];
-
-      const ctx = document.getElementById("wbgtChart").getContext("2d");
-      const chart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: data.map((d) => {
-            // 直接 JST 時刻として扱う（タイムゾーン変換なし）
-            return (
-              d.month +
-              "/" +
-              d.day +
-              " " +
-              d.hour.toString().padStart(2, "0") +
-              ":" +
-              d.minute.toString().padStart(2, "0")
-            );
-          }),
-          datasets: [
-            {
-              label: "WBGT予報値",
-              data: data.map((d) => d.wbgt),
-              borderColor: "#2196F3",
-              backgroundColor: "transparent",
-              borderWidth: 3,
-              pointBackgroundColor: "#2196F3",
-              pointBorderColor: "#fff",
-              pointBorderWidth: 2,
-              pointRadius: 5,
-              tension: 0.3,
+        const data = [{"time": "2026-05-02T12:00:00", "year": 2026, "month": 5, "day": 2, "hour": 12, "minute": 0, "wbgt": 16.0}, {"time": "2026-05-02T15:00:00", "year": 2026, "month": 5, "day": 2, "hour": 15, "minute": 0, "wbgt": 17.0}, {"time": "2026-05-02T18:00:00", "year": 2026, "month": 5, "day": 2, "hour": 18, "minute": 0, "wbgt": 11.0}, {"time": "2026-05-02T21:00:00", "year": 2026, "month": 5, "day": 2, "hour": 21, "minute": 0, "wbgt": 10.0}, {"time": "2026-05-03T00:00:00", "year": 2026, "month": 5, "day": 3, "hour": 0, "minute": 0, "wbgt": 10.0}, {"time": "2026-05-03T03:00:00", "year": 2026, "month": 5, "day": 3, "hour": 3, "minute": 0, "wbgt": 9.0}, {"time": "2026-05-03T06:00:00", "year": 2026, "month": 5, "day": 3, "hour": 6, "minute": 0, "wbgt": 11.0}, {"time": "2026-05-03T09:00:00", "year": 2026, "month": 5, "day": 3, "hour": 9, "minute": 0, "wbgt": 14.0}, {"time": "2026-05-03T12:00:00", "year": 2026, "month": 5, "day": 3, "hour": 12, "minute": 0, "wbgt": 16.0}, {"time": "2026-05-03T15:00:00", "year": 2026, "month": 5, "day": 3, "hour": 15, "minute": 0, "wbgt": 17.0}, {"time": "2026-05-03T18:00:00", "year": 2026, "month": 5, "day": 3, "hour": 18, "minute": 0, "wbgt": 15.0}, {"time": "2026-05-03T21:00:00", "year": 2026, "month": 5, "day": 3, "hour": 21, "minute": 0, "wbgt": 15.0}, {"time": "2026-05-04T00:00:00", "year": 2026, "month": 5, "day": 4, "hour": 0, "minute": 0, "wbgt": 14.0}, {"time": "2026-05-04T03:00:00", "year": 2026, "month": 5, "day": 4, "hour": 3, "minute": 0, "wbgt": 13.0}, {"time": "2026-05-04T06:00:00", "year": 2026, "month": 5, "day": 4, "hour": 6, "minute": 0, "wbgt": 14.0}, {"time": "2026-05-04T09:00:00", "year": 2026, "month": 5, "day": 4, "hour": 9, "minute": 0, "wbgt": 18.0}, {"time": "2026-05-04T12:00:00", "year": 2026, "month": 5, "day": 4, "hour": 12, "minute": 0, "wbgt": 22.0}, {"time": "2026-05-04T15:00:00", "year": 2026, "month": 5, "day": 4, "hour": 15, "minute": 0, "wbgt": 16.0}, {"time": "2026-05-04T18:00:00", "year": 2026, "month": 5, "day": 4, "hour": 18, "minute": 0, "wbgt": 13.0}, {"time": "2026-05-04T21:00:00", "year": 2026, "month": 5, "day": 4, "hour": 21, "minute": 0, "wbgt": 12.0}, {"time": "2026-05-05T00:00:00", "year": 2026, "month": 5, "day": 5, "hour": 0, "minute": 0, "wbgt": 11.0}];
+        
+        const ctx = document.getElementById('wbgtChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(d => {
+                    // 直接 JST 時刻として扱う（タイムゾーン変換なし）
+                    return d.month + '/' + d.day + ' ' + 
+                           d.hour.toString().padStart(2, '0') + ':' + 
+                           d.minute.toString().padStart(2, '0');
+                }),
+                datasets: [{
+                    label: 'WBGT予報値',
+                    data: data.map(d => d.wbgt),
+                    borderColor: '#2196F3',
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#2196F3',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    tension: 0.3
+                }]
             },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: "時刻 (JST)",
-              },
-            },
-            y: {
-              beginAtZero: false,
-              min: Math.min(...data.map((d) => d.wbgt)) - 2,
-              max: Math.max(...data.map((d) => d.wbgt)) + 2,
-              title: {
-                display: true,
-                text: "WBGT (°C)",
-              },
-              ticks: {
-                callback: function (value) {
-                  return value + "°C";
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '時刻 (JST)'
+                        }
+                    },
+                    y: {
+                        beginAtZero: false,
+                        min: Math.min(...data.map(d => d.wbgt)) - 2,
+                        max: Math.max(...data.map(d => d.wbgt)) + 2,
+                        title: {
+                            display: true,
+                            text: 'WBGT (°C)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '°C';
+                            }
+                        }
+                    }
                 },
-              },
-            },
-          },
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              callbacks: {
-                title: function (context) {
-                  const dataPoint = data[context[0].dataIndex];
-                  return (
-                    dataPoint.year +
-                    "年" +
-                    dataPoint.month +
-                    "月" +
-                    dataPoint.day +
-                    "日 " +
-                    dataPoint.hour.toString().padStart(2, "0") +
-                    ":" +
-                    dataPoint.minute.toString().padStart(2, "0") +
-                    " (JST)"
-                  );
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(context) {
+                                const dataPoint = data[context[0].dataIndex];
+                                return dataPoint.year + '年' + 
+                                       dataPoint.month + '月' + 
+                                       dataPoint.day + '日 ' + 
+                                       dataPoint.hour.toString().padStart(2, '0') + ':' + 
+                                       dataPoint.minute.toString().padStart(2, '0') + ' (JST)';
+                            },
+                            label: function(context) {
+                                return 'WBGT: ' + context.parsed.y.toFixed(1) + '°C';
+                            }
+                        }
+                    }
                 },
-                label: function (context) {
-                  return "WBGT: " + context.parsed.y.toFixed(1) + "°C";
-                },
-              },
-            },
-          },
-          annotation: {
-            annotations: {
-              line1: {
-                type: "line",
-                yMin: 25,
-                yMax: 25,
-                borderColor: "#FF6600",
-                borderWidth: 2,
-                borderDash: [5, 5],
-                label: {
-                  content: "警戒レベル",
-                  enabled: true,
-                  position: "end",
-                },
-              },
-              line2: {
-                type: "line",
-                yMin: 28,
-                yMax: 28,
-                borderColor: "#FF0000",
-                borderWidth: 2,
-                borderDash: [5, 5],
-                label: {
-                  content: "厳重警戒レベル",
-                  enabled: true,
-                  position: "end",
-                },
-              },
-              line3: {
-                type: "line",
-                yMin: 31,
-                yMax: 31,
-                borderColor: "#800080",
-                borderWidth: 2,
-                borderDash: [5, 5],
-                label: {
-                  content: "運動中止レベル",
-                  enabled: true,
-                  position: "end",
-                },
-              },
-            },
-          },
-        },
-      });
-
-      // ページロード時に最新の更新時刻を表示
-      document.addEventListener("DOMContentLoaded", function () {
-        console.log("石巻 WBGT Dashboard loaded");
-        console.log("Data points:", data.length);
-        console.log("Last update:", "2026-05-02T01:47:48.605337");
-      });
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'line',
+                            yMin: 25,
+                            yMax: 25,
+                            borderColor: '#FF6600',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            label: {
+                                content: '警戒レベル',
+                                enabled: true,
+                                position: 'end'
+                            }
+                        },
+                        line2: {
+                            type: 'line',
+                            yMin: 28,
+                            yMax: 28,
+                            borderColor: '#FF0000',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            label: {
+                                content: '厳重警戒レベル',
+                                enabled: true,
+                                position: 'end'
+                            }
+                        },
+                        line3: {
+                            type: 'line',
+                            yMin: 31,
+                            yMax: 31,
+                            borderColor: '#800080',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            label: {
+                                content: '運動中止レベル',
+                                enabled: true,
+                                position: 'end'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // ページロード時に最新の更新時刻を表示
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('石巻 WBGT Dashboard loaded');
+            console.log('Data points:', data.length);
+            console.log('Last update:', '2026-05-02T02:58:59.778376');
+        });
     </script>
-  </body>
+</body>
 </html>
