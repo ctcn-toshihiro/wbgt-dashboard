@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-05-02T06:30:39.356909",
+  "generated_at": "2026-05-02T08:13:21.716625",
   "stations": {
     "abashiri": {
       "name": "網走",
       "station_id": "17341",
-      "current_wbgt": 4.0,
+      "current_wbgt": 3.0,
       "max_wbgt": 9.0,
       "min_wbgt": 0.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/05/02 15:25",
+      "update_time": "2026/05/02 16:25",
       "data_points": 19,
       "html_file": "abashiri.html"
     },
@@ -19,29 +19,29 @@
       "max_wbgt": 13.0,
       "min_wbgt": 3.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/05/02 15:25",
+      "update_time": "2026/05/02 16:25",
       "data_points": 19,
       "html_file": "kushiro.html"
     },
     "hachinohe": {
       "name": "八戸",
       "station_id": "31602",
-      "current_wbgt": 9.0,
+      "current_wbgt": 10.0,
       "max_wbgt": 20.0,
       "min_wbgt": 6.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/05/02 15:25",
+      "update_time": "2026/05/02 16:25",
       "data_points": 19,
       "html_file": "hachinohe.html"
     },
     "ishinomaki": {
       "name": "石巻",
       "station_id": "34292",
-      "current_wbgt": 11.0,
+      "current_wbgt": 10.0,
       "max_wbgt": 20.0,
       "min_wbgt": 9.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/05/02 15:25",
+      "update_time": "2026/05/02 16:25",
       "data_points": 19,
       "html_file": "ishinomaki.html"
     },
@@ -52,7 +52,7 @@
       "max_wbgt": 22.0,
       "min_wbgt": 13.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/05/02 15:25",
+      "update_time": "2026/05/02 16:25",
       "data_points": 19,
       "html_file": "tokyo.html"
     },
@@ -63,7 +63,7 @@
       "max_wbgt": 23.0,
       "min_wbgt": 14.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/05/02 15:25",
+      "update_time": "2026/05/02 16:25",
       "data_points": 19,
       "html_file": "tateyama.html"
     },
@@ -74,7 +74,7 @@
       "max_wbgt": 22.0,
       "min_wbgt": 13.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/05/02 15:25",
+      "update_time": "2026/05/02 16:25",
       "data_points": 19,
       "html_file": "shionomisaki.html"
     }
