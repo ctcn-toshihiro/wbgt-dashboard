@@ -37,11 +37,23 @@ STATIONS = {
         "filename": "ishinomaki.html",
         "json_filename": "wbgt_data_ishinomaki.json",
     },
+    "tokyo": {
+        "station_id": "44132",
+        "name": "東京",
+        "filename": "tokyo.html",
+        "json_filename": "wbgt_data_tokyo.json",
+    },
     "tateyama": {
         "station_id": "45401",
         "name": "館山",
         "filename": "tateyama.html",
         "json_filename": "wbgt_data_tateyama.json",
+    },
+    "shionomisaki": {
+        "station_id": "65356",
+        "name": "潮岬",
+        "filename": "shionomisaki.html",
+        "json_filename": "wbgt_data_shionomisaki.json",
     },
 }
 
@@ -368,7 +380,9 @@ def generate_html(wbgt_data, station_name, station_key):
             <a href="kushiro.html" class="nav-button">釧路</a>
             <a href="hachinohe.html" class="nav-button">八戸</a>
             <a href="ishinomaki.html" class="nav-button">石巻</a>
+            <a href="tokyo.html" class="nav-button">東京</a>
             <a href="tateyama.html" class="nav-button">館山</a>
+            <a href="shionomisaki.html" class="nav-button">潮岬</a>
         </div>
 
         <div class="location-info">
@@ -769,9 +783,19 @@ def create_index_html():
                 <div class="station-id">観測地点コード: 34292</div>
                 <div class="station-status">運用中</div>
             </a>
+            <a href="tokyo.html" class="station-card">
+                <div class="station-name">東京</div>
+                <div class="station-id">観測地点コード: 44132</div>
+                <div class="station-status">運用中</div>
+            </a>
             <a href="tateyama.html" class="station-card">
                 <div class="station-name">館山</div>
                 <div class="station-id">観測地点コード: 45401</div>
+                <div class="station-status">運用中</div>
+            </a>
+            <a href="shionomisaki.html" class="station-card">
+                <div class="station-name">潮岬</div>
+                <div class="station-id">観測地点コード: 65356</div>
                 <div class="station-status">運用中</div>
             </a>
         </div>
