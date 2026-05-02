@@ -50,7 +50,7 @@ wbgt-dashboard/
 #### 4. 初回実行
 
 1. リポジトリの `Actions` タブをクリック
-2. `Update WBGT Dashboard` ワークフローをクリック
+2. `WBGT Data Processing` ワークフローをクリック
 3. `Run workflow` ボタンで手動実行
 
 ### 完成！
