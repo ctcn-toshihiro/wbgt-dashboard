@@ -80,7 +80,7 @@
             letter-spacing: 1px;
         }
         .danger-card {
-            background: #0066CC;
+            background: #28A745;
             color: white;
             padding: 25px;
             border-radius: 15px;
@@ -212,13 +212,13 @@
         </div>
         
         <div class="danger-card">
-            <div class="danger-level">注意</div>
-            <div class="danger-message">適度な水分補給を心がけましょう</div>
+            <div class="danger-level">ほぼ安全</div>
+            <div class="danger-message">適宜水分・塩分の補給を行う</div>
         </div>
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-value" style="color: #0066CC;">6.0°C</div>
+                <div class="stat-value" style="color: #28A745;">6.0°C</div>
                 <div class="stat-label">現在の WBGT</div>
             </div>
             <div class="stat-card">
@@ -237,26 +237,30 @@
         
         <div class="legend">
             <div class="legend-item">
+                <div class="legend-color" style="background-color: #28A745;"></div>
+                <span>ほぼ安全 (21未満)</span>
+            </div>
+            <div class="legend-item">
                 <div class="legend-color" style="background-color: #0066CC;"></div>
-                <span>注意 (～24°C)</span>
+                <span>注意 (21〜25未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #FF6600;"></div>
-                <span>警戒 (25-27°C)</span>
+                <span>警戒 (25〜28未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #FF0000;"></div>
-                <span>厳重警戒 (28-30°C)</span>
+                <span>厳重警戒 (28〜31未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #800080;"></div>
-                <span>運動中止 (31°C～)</span>
+                <span>運動は原則中止 (31以上)</span>
             </div>
         </div>
         
         <div class="update-info">
             <p>データ更新: 2026/05/02 11:25</p>
-            <p>最終生成: 2026年05月02日 03:02:49</p>
+            <p>最終生成: 2026年05月02日 03:14:05</p>
             <p>※ JST 9:00-21:00 の間、2時間毎に自動更新されます</p>
             <p>※環境省「熱中症予防情報サイト」（https://www.wbgt.env.go.jp/）の WBGT データを加工して作成</p>
         </div>
@@ -383,7 +387,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('網走 WBGT Dashboard loaded');
             console.log('Data points:', data.length);
-            console.log('Last update:', '2026-05-02T03:02:49.856462');
+            console.log('Last update:', '2026-05-02T03:14:05.158222');
         });
     </script>
 </body>

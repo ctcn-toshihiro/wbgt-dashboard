@@ -213,7 +213,7 @@
         
         <div class="danger-card">
             <div class="danger-level">注意</div>
-            <div class="danger-message">適度な水分補給を心がけましょう</div>
+            <div class="danger-message">熱中症の兆候に注意し、運動の合間に水分・塩分を補給する</div>
         </div>
         
         <div class="stats-grid">
@@ -237,26 +237,30 @@
         
         <div class="legend">
             <div class="legend-item">
+                <div class="legend-color" style="background-color: #28A745;"></div>
+                <span>ほぼ安全 (21未満)</span>
+            </div>
+            <div class="legend-item">
                 <div class="legend-color" style="background-color: #0066CC;"></div>
-                <span>注意 (～24°C)</span>
+                <span>注意 (21〜25未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #FF6600;"></div>
-                <span>警戒 (25-27°C)</span>
+                <span>警戒 (25〜28未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #FF0000;"></div>
-                <span>厳重警戒 (28-30°C)</span>
+                <span>厳重警戒 (28〜31未満)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color" style="background-color: #800080;"></div>
-                <span>運動中止 (31°C～)</span>
+                <span>運動は原則中止 (31以上)</span>
             </div>
         </div>
         
         <div class="update-info">
             <p>データ更新: 2026/05/02 11:25</p>
-            <p>最終生成: 2026年05月02日 03:02:51</p>
+            <p>最終生成: 2026年05月02日 03:14:06</p>
             <p>※ JST 9:00-21:00 の間、2時間毎に自動更新されます</p>
             <p>※環境省「熱中症予防情報サイト」（https://www.wbgt.env.go.jp/）の WBGT データを加工して作成</p>
         </div>
@@ -383,7 +387,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('館山 WBGT Dashboard loaded');
             console.log('Data points:', data.length);
-            console.log('Last update:', '2026-05-02T03:02:51.020317');
+            console.log('Last update:', '2026-05-02T03:14:06.131291');
         });
     </script>
 </body>
