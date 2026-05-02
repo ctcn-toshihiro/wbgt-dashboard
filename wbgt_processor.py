@@ -13,11 +13,23 @@ import traceback
 
 # 観測地点の設定
 STATIONS = {
+    "abashiri": {
+        "station_id": "17341",
+        "name": "網走",
+        "filename": "abashiri.html",
+        "json_filename": "wbgt_data_abashiri.json",
+    },
     "kushiro": {
         "station_id": "19432",
         "name": "釧路",
         "filename": "kushiro.html",
         "json_filename": "wbgt_data_kushiro.json",
+    },
+    "hachinohe": {
+        "station_id": "31602",
+        "name": "八戸",
+        "filename": "hachinohe.html",
+        "json_filename": "wbgt_data_hachinohe.json",
     },
     "ishinomaki": {
         "station_id": "34292",
@@ -348,7 +360,9 @@ def generate_html(wbgt_data, station_name, station_key):
         
         <div class="navigation">
             <strong>観測地点切替:</strong><br>
+            <a href="abashiri.html" class="nav-button">網走</a>
             <a href="kushiro.html" class="nav-button">釧路</a>
+            <a href="hachinohe.html" class="nav-button">八戸</a>
             <a href="ishinomaki.html" class="nav-button">石巻</a>
             <a href="tateyama.html" class="nav-button">館山</a>
         </div>
@@ -727,9 +741,19 @@ def create_index_html():
         </div>
         
         <div class="stations-grid">
+            <a href="abashiri.html" class="station-card">
+                <div class="station-name">網走</div>
+                <div class="station-id">観測地点コード: 17341</div>
+                <div class="station-status">運用中</div>
+            </a>
             <a href="kushiro.html" class="station-card">
                 <div class="station-name">釧路</div>
                 <div class="station-id">観測地点コード: 19432</div>
+                <div class="station-status">運用中</div>
+            </a>
+            <a href="hachinohe.html" class="station-card">
+                <div class="station-name">八戸</div>
+                <div class="station-id">観測地点コード: 31602</div>
                 <div class="station-status">運用中</div>
             </a>
             <a href="ishinomaki.html" class="station-card">

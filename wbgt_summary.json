@@ -1,6 +1,17 @@
 {
-  "generated_at": "2026-05-02T02:46:38.804208",
+  "generated_at": "2026-05-02T02:59:00.050726",
   "stations": {
+    "abashiri": {
+      "name": "網走",
+      "station_id": "17341",
+      "current_wbgt": 6.0,
+      "max_wbgt": 10.0,
+      "min_wbgt": 0.0,
+      "danger_level": "注意",
+      "update_time": "2026/05/02 11:25",
+      "data_points": 21,
+      "html_file": "abashiri.html"
+    },
     "kushiro": {
       "name": "釧路",
       "station_id": "19432",
@@ -11,6 +22,17 @@
       "update_time": "2026/05/02 11:25",
       "data_points": 21,
       "html_file": "kushiro.html"
+    },
+    "hachinohe": {
+      "name": "八戸",
+      "station_id": "31602",
+      "current_wbgt": 17.0,
+      "max_wbgt": 19.0,
+      "min_wbgt": 7.0,
+      "danger_level": "注意",
+      "update_time": "2026/05/02 11:25",
+      "data_points": 21,
+      "html_file": "hachinohe.html"
     },
     "ishinomaki": {
       "name": "石巻",
@@ -35,6 +57,6 @@
       "html_file": "tateyama.html"
     }
   },
-  "total_stations": 3,
+  "total_stations": 5,
   "update_schedule": "JST 9:00-21:00, every 2 hours"
 }
