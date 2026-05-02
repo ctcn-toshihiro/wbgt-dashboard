@@ -14,129 +14,49 @@
             min-height: 100vh;
             color: #333;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            font-size: 2em;
-            margin-bottom: 8px;
-        }
-        .header p {
-            font-size: 1em;
-            opacity: 0.85;
-            margin: 0;
-        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { text-align: center; color: white; margin-bottom: 20px; }
+        .header h1 { font-size: 2em; margin-bottom: 8px; }
+        .header p { font-size: 1em; opacity: 0.85; margin: 0; }
         .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
+            display: flex; flex-wrap: wrap; gap: 10px;
+            justify-content: center; margin-bottom: 20px;
         }
         .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.15);
-            padding: 4px 10px;
-            border-radius: 12px;
-            color: white;
-            font-size: 0.8em;
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.15); padding: 4px 10px;
+            border-radius: 12px; color: white; font-size: 0.8em;
         }
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 20px;
         }
         .card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
+            background: white; border-radius: 16px; padding: 20px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            text-decoration: none;
-            color: inherit;
-            display: block;
+            text-decoration: none; color: inherit; display: block;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.18);
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-        .station-name {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #2c3e50;
-        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.18); }
+        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .station-name { font-size: 1.4em; font-weight: bold; color: #2c3e50; }
         .danger-badge {
-            font-size: 0.8em;
-            font-weight: bold;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            white-space: nowrap;
+            font-size: 0.8em; font-weight: bold; color: white;
+            padding: 5px 12px; border-radius: 20px; white-space: nowrap;
         }
-        .wbgt-row {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 14px;
-        }
-        .wbgt-item {
-            text-align: center;
-            flex: 1;
-        }
-        .wbgt-value {
-            font-size: 1.6em;
-            font-weight: bold;
-        }
-        .wbgt-label {
-            font-size: 0.75em;
-            color: #888;
-            text-transform: uppercase;
-        }
-        .chart-wrap {
-            height: 120px;
-            position: relative;
-        }
-        .update-time {
-            font-size: 0.75em;
-            color: #aaa;
-            margin-top: 8px;
-            text-align: right;
-        }
-        .loading {
-            text-align: center;
-            color: white;
-            padding: 40px;
-            font-size: 1.1em;
-        }
-        .error-card {
-            background: #fff3f3;
-            border: 1px solid #ffcdd2;
-        }
+        .wbgt-row { display: flex; gap: 16px; margin-bottom: 14px; }
+        .wbgt-item { text-align: center; flex: 1; }
+        .wbgt-value { font-size: 1.6em; font-weight: bold; }
+        .wbgt-label { font-size: 0.75em; color: #888; text-transform: uppercase; }
+        .chart-wrap { height: 120px; position: relative; }
+        .update-time { font-size: 0.75em; color: #aaa; margin-top: 8px; text-align: right; }
+        .loading { text-align: center; color: white; padding: 40px; font-size: 1.1em; }
+        .error-card { background: #fff3f3; border: 1px solid #ffcdd2; }
         @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            .header h1 {
-                font-size: 1.5em;
-            }
+            .grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.5em; }
         }
     </style>
 </head>
@@ -146,7 +66,6 @@
             <h1>WBGT 予報ダッシュボード</h1>
             <p id="generated-at">読み込み中...</p>
         </div>
-
         <div class="legend">
             <div class="legend-item"><div class="legend-dot" style="background:#28A745"></div>ほぼ安全 (21未満)</div>
             <div class="legend-item"><div class="legend-dot" style="background:#0066CC"></div>注意 (21〜25未満)</div>
@@ -154,12 +73,10 @@
             <div class="legend-item"><div class="legend-dot" style="background:#FF0000"></div>厳重警戒 (28〜31未満)</div>
             <div class="legend-item"><div class="legend-dot" style="background:#800080"></div>運動は原則中止 (31以上)</div>
         </div>
-
         <div class="grid" id="grid">
             <div class="loading">データを読み込んでいます...</div>
         </div>
     </div>
-
     <script>
         const STATIONS = [
             { key: 'abashiri',     name: '網走',  file: 'wbgt_data_abashiri.json',     url: 'abashiri.html' },
@@ -170,7 +87,6 @@
             { key: 'tateyama',     name: '館山',  file: 'wbgt_data_tateyama.json',     url: 'tateyama.html' },
             { key: 'shionomisaki', name: '潮岬',  file: 'wbgt_data_shionomisaki.json', url: 'shionomisaki.html' },
         ];
-
         function getDangerInfo(wbgt) {
             if (wbgt >= 31) return { level: '運動は原則中止', color: '#800080' };
             if (wbgt >= 28) return { level: '厳重警戒',       color: '#FF0000' };
@@ -178,20 +94,17 @@
             if (wbgt >= 21) return { level: '注意',           color: '#0066CC' };
             return              { level: 'ほぼ安全',          color: '#28A745' };
         }
-
         function buildCard(station, data) {
             const points  = data.data;
             const current = points[0].wbgt;
             const max     = Math.max(...points.map(d => d.wbgt));
             const min     = Math.min(...points.map(d => d.wbgt));
             const danger  = getDangerInfo(current);
-
-            const labels = points.map(d =>
+            const labels  = points.map(d =>
                 d.month + '/' + d.day + ' ' +
                 String(d.hour).padStart(2, '0') + ':' +
                 String(d.minute).padStart(2, '0')
             );
-
             const card = document.createElement('a');
             card.href = station.url;
             card.className = 'card';
@@ -214,15 +127,11 @@
                         <div class="wbgt-label">最低</div>
                     </div>
                 </div>
-                <div class="chart-wrap">
-                    <canvas id="chart-${station.key}"></canvas>
-                </div>
+                <div class="chart-wrap"><canvas id="chart-${station.key}"></canvas></div>
                 <div class="update-time">更新: ${data.update_time}</div>
             `;
-
             return { card, labels, values: points.map(d => d.wbgt), color: danger.color, key: station.key };
         }
-
         function drawChart(key, labels, values, color) {
             const ctx = document.getElementById('chart-' + key).getContext('2d');
             new Chart(ctx, {
@@ -230,18 +139,13 @@
                 data: {
                     labels,
                     datasets: [{
-                        data: values,
-                        borderColor: color,
-                        backgroundColor: color + '22',
-                        borderWidth: 2,
-                        pointRadius: 0,
-                        fill: true,
-                        tension: 0.3,
+                        data: values, borderColor: color,
+                        backgroundColor: color + '22', borderWidth: 2,
+                        pointRadius: 0, fill: true, tension: 0.3,
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false }, tooltip: { enabled: true } },
                     scales: {
                         x: { display: false },
@@ -254,18 +158,14 @@
                 }
             });
         }
-
         async function loadAll() {
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
-
             const results = await Promise.allSettled(
                 STATIONS.map(s => fetch(s.file).then(r => r.json()))
             );
-
             let latestTime = '';
             const charts = [];
-
             results.forEach((result, i) => {
                 const station = STATIONS[i];
                 if (result.status === 'fulfilled') {
@@ -280,17 +180,14 @@
                     grid.appendChild(card);
                 }
             });
-
             if (latestTime) {
                 const d = new Date(latestTime);
                 document.getElementById('generated-at').textContent =
                     '最終更新: ' + d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日 ' +
                     String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
             }
-
             charts.forEach(({ key, labels, values, color }) => drawChart(key, labels, values, color));
         }
-
         loadAll();
     </script>
 </body>
