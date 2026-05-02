@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WBGT 予報ダッシュボード - 地点選択</title>
+    <title>WBGT 予報ダッシュボード</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -14,104 +15,127 @@
             color: #333;
         }
         .container {
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            text-align: center;
         }
         .header {
-            margin-bottom: 40px;
-        }
-        .title {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 15px;
-        }
-        .subtitle {
-            font-size: 1.2em;
-            color: #7f8c8d;
+            text-align: center;
+            color: white;
             margin-bottom: 20px;
         }
-        .description {
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+        .header p {
             font-size: 1em;
-            color: #5a6c7d;
-            line-height: 1.6;
-            margin-bottom: 40px;
+            opacity: 0.85;
+            margin: 0;
         }
-        .stations-grid {
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: white;
+            font-size: 0.8em;
+        }
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
         }
-        .station-card {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 30px;
-            border-radius: 15px;
-            border-left: 5px solid #007bff;
-            transition: all 0.3s ease;
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
             text-decoration: none;
             color: inherit;
             display: block;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .station-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
         }
         .station-name {
-            font-size: 1.5em;
+            font-size: 1.4em;
             font-weight: bold;
             color: #2c3e50;
-            margin-bottom: 10px;
         }
-        .station-id {
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-bottom: 15px;
-        }
-        .station-status {
-            display: inline-block;
-            padding: 5px 15px;
-            background: #28a745;
-            color: white;
-            border-radius: 20px;
+        .danger-badge {
             font-size: 0.8em;
+            font-weight: bold;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        .wbgt-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+        .wbgt-item {
+            text-align: center;
+            flex: 1;
+        }
+        .wbgt-value {
+            font-size: 1.6em;
+            font-weight: bold;
+        }
+        .wbgt-label {
+            font-size: 0.75em;
+            color: #888;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #dee2e6;
-            color: #6c757d;
-            font-size: 0.9em;
+        .chart-wrap {
+            height: 120px;
+            position: relative;
         }
-        .auto-update-info {
-            background: #e8f5e8;
-            border: 1px solid #4caf50;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
+        .update-time {
+            font-size: 0.75em;
+            color: #aaa;
+            margin-top: 8px;
+            text-align: right;
         }
-        .update-icon {
-            color: #4caf50;
-            font-size: 1.5em;
-            margin-bottom: 10px;
+        .loading {
+            text-align: center;
+            color: white;
+            padding: 40px;
+            font-size: 1.1em;
+        }
+        .error-card {
+            background: #fff3f3;
+            border: 1px solid #ffcdd2;
         }
         @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                padding: 30px 20px;
-            }
-            .title {
-                font-size: 2em;
-            }
-            .stations-grid {
+            .grid {
                 grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.5em;
             }
         }
     </style>
@@ -119,63 +143,155 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="title">WBGT 予報ダッシュボード</div>
-            <div class="subtitle">熱中症予防情報 - 観測地点選択</div>
-            <div class="description">
-                環境省の WBGT データを基に、各観測地点の熱中症予防情報を提供します。<br>
-                下記から確認したい地点を選択してください。
-            </div>
+            <h1>WBGT 予報ダッシュボード</h1>
+            <p id="generated-at">読み込み中...</p>
         </div>
-        
-        <div class="auto-update-info">
-            <div class="update-icon">🔄</div>
-            <strong>自動更新システム</strong><br>
-            JST 9:00-21:00 の間、2時間毎にデータを自動更新しています
+
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#28A745"></div>ほぼ安全 (21未満)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#0066CC"></div>注意 (21〜25未満)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#FF6600"></div>警戒 (25〜28未満)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#FF0000"></div>厳重警戒 (28〜31未満)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#800080"></div>運動は原則中止 (31以上)</div>
         </div>
-        
-        <div class="stations-grid">
-            <a href="abashiri.html" class="station-card">
-                <div class="station-name">網走</div>
-                <div class="station-id">観測地点コード: 17341</div>
-                <div class="station-status">運用中</div>
-            </a>
-            <a href="kushiro.html" class="station-card">
-                <div class="station-name">釧路</div>
-                <div class="station-id">観測地点コード: 19432</div>
-                <div class="station-status">運用中</div>
-            </a>
-            <a href="hachinohe.html" class="station-card">
-                <div class="station-name">八戸</div>
-                <div class="station-id">観測地点コード: 31602</div>
-                <div class="station-status">運用中</div>
-            </a>
-            <a href="ishinomaki.html" class="station-card">
-                <div class="station-name">石巻</div>
-                <div class="station-id">観測地点コード: 34292</div>
-                <div class="station-status">運用中</div>
-            </a>
-            <a href="tokyo.html" class="station-card">
-                <div class="station-name">東京</div>
-                <div class="station-id">観測地点コード: 44132</div>
-                <div class="station-status">運用中</div>
-            </a>
-            <a href="tateyama.html" class="station-card">
-                <div class="station-name">館山</div>
-                <div class="station-id">観測地点コード: 45401</div>
-                <div class="station-status">運用中</div>
-            </a>
-            <a href="shionomisaki.html" class="station-card">
-                <div class="station-name">潮岬</div>
-                <div class="station-id">観測地点コード: 65356</div>
-                <div class="station-status">運用中</div>
-            </a>
-        </div>
-        
-        <div class="footer">
-            <p>※このサイトは環境省「熱中症予防情報サイト」のデータを加工して作成しています</p>
-            <p>※WBGT（湿球黒球温度）: 熱中症予防を目的とした暑さ指数</p>
-            <p>最終更新: 2026年05月02日 05:45:30</p>
+
+        <div class="grid" id="grid">
+            <div class="loading">データを読み込んでいます...</div>
         </div>
     </div>
+
+    <script>
+        const STATIONS = [
+            { key: 'abashiri',     name: '網走',  file: 'wbgt_data_abashiri.json',     url: 'abashiri.html' },
+            { key: 'kushiro',      name: '釧路',  file: 'wbgt_data_kushiro.json',      url: 'kushiro.html' },
+            { key: 'hachinohe',    name: '八戸',  file: 'wbgt_data_hachinohe.json',    url: 'hachinohe.html' },
+            { key: 'ishinomaki',   name: '石巻',  file: 'wbgt_data_ishinomaki.json',   url: 'ishinomaki.html' },
+            { key: 'tokyo',        name: '東京',  file: 'wbgt_data_tokyo.json',        url: 'tokyo.html' },
+            { key: 'tateyama',     name: '館山',  file: 'wbgt_data_tateyama.json',     url: 'tateyama.html' },
+            { key: 'shionomisaki', name: '潮岬',  file: 'wbgt_data_shionomisaki.json', url: 'shionomisaki.html' },
+        ];
+
+        function getDangerInfo(wbgt) {
+            if (wbgt >= 31) return { level: '運動は原則中止', color: '#800080' };
+            if (wbgt >= 28) return { level: '厳重警戒',       color: '#FF0000' };
+            if (wbgt >= 25) return { level: '警戒',           color: '#FF6600' };
+            if (wbgt >= 21) return { level: '注意',           color: '#0066CC' };
+            return              { level: 'ほぼ安全',          color: '#28A745' };
+        }
+
+        function buildCard(station, data) {
+            const points  = data.data;
+            const current = points[0].wbgt;
+            const max     = Math.max(...points.map(d => d.wbgt));
+            const min     = Math.min(...points.map(d => d.wbgt));
+            const danger  = getDangerInfo(current);
+
+            const labels = points.map(d =>
+                d.month + '/' + d.day + ' ' +
+                String(d.hour).padStart(2, '0') + ':' +
+                String(d.minute).padStart(2, '0')
+            );
+
+            const card = document.createElement('a');
+            card.href = station.url;
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="station-name">${station.name}</div>
+                    <div class="danger-badge" style="background:${danger.color}">${danger.level}</div>
+                </div>
+                <div class="wbgt-row">
+                    <div class="wbgt-item">
+                        <div class="wbgt-value" style="color:${danger.color}">${current.toFixed(1)}°C</div>
+                        <div class="wbgt-label">現在</div>
+                    </div>
+                    <div class="wbgt-item">
+                        <div class="wbgt-value" style="color:#dc3545">${max.toFixed(1)}°C</div>
+                        <div class="wbgt-label">最高</div>
+                    </div>
+                    <div class="wbgt-item">
+                        <div class="wbgt-value" style="color:#28a745">${min.toFixed(1)}°C</div>
+                        <div class="wbgt-label">最低</div>
+                    </div>
+                </div>
+                <div class="chart-wrap">
+                    <canvas id="chart-${station.key}"></canvas>
+                </div>
+                <div class="update-time">更新: ${data.update_time}</div>
+            `;
+
+            return { card, labels, values: points.map(d => d.wbgt), color: danger.color, key: station.key };
+        }
+
+        function drawChart(key, labels, values, color) {
+            const ctx = document.getElementById('chart-' + key).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        data: values,
+                        borderColor: color,
+                        backgroundColor: color + '22',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: true,
+                        tension: 0.3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { enabled: true } },
+                    scales: {
+                        x: { display: false },
+                        y: {
+                            display: true,
+                            ticks: { font: { size: 10 }, callback: v => v + '°' },
+                            grid: { color: '#f0f0f0' },
+                        }
+                    }
+                }
+            });
+        }
+
+        async function loadAll() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+
+            const results = await Promise.allSettled(
+                STATIONS.map(s => fetch(s.file).then(r => r.json()))
+            );
+
+            let latestTime = '';
+            const charts = [];
+
+            results.forEach((result, i) => {
+                const station = STATIONS[i];
+                if (result.status === 'fulfilled') {
+                    const { card, labels, values, color, key } = buildCard(station, result.value);
+                    grid.appendChild(card);
+                    charts.push({ key, labels, values, color });
+                    if (!latestTime) latestTime = result.value.last_updated;
+                } else {
+                    const card = document.createElement('div');
+                    card.className = 'card error-card';
+                    card.innerHTML = `<div class="station-name">${station.name}</div><p style="color:#e53935">データ取得失敗</p>`;
+                    grid.appendChild(card);
+                }
+            });
+
+            if (latestTime) {
+                const d = new Date(latestTime);
+                document.getElementById('generated-at').textContent =
+                    '最終更新: ' + d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日 ' +
+                    String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+            }
+
+            charts.forEach(({ key, labels, values, color }) => drawChart(key, labels, values, color));
+        }
+
+        loadAll();
+    </script>
 </body>
 </html>
