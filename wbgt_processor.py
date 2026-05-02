@@ -8,7 +8,7 @@ GitHub Actions 用 WBGT データ処理スクリプト（2地点対応版）
 import requests
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import traceback
 
 # 観測地点の設定
@@ -136,7 +136,11 @@ def download_wbgt_data(station_id):
             "station_id": actual_station_id,
             "update_time": update_time,
             "data": parsed_data,
-            "last_updated": datetime.now().isoformat(),
+            # "last_updated": datetime.now().isoformat(),
+            # 変更後
+            "last_updated": datetime.now(timezone.utc)
+            .astimezone(timezone(timedelta(hours=9)))
+            .isoformat(),
         }
 
     except Exception as e:
@@ -832,7 +836,10 @@ def create_summary_json():
     print("📊 概要データファイルを生成中...")
 
     summary_data = {
-        "generated_at": datetime.now().isoformat(),
+        # "generated_at": datetime.now().isoformat(),
+        "generated_at": datetime.now(timezone.utc)
+        .astimezone(timezone(timedelta(hours=9)))
+        .isoformat(),
         "stations": {},
         "total_stations": len(STATIONS),
         "update_schedule": "JST 9:00-21:00, every 2 hours",
