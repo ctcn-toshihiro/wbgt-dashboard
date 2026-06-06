@@ -1,9 +1,14 @@
 {
   "error": true,
   "error_message": "cannot unpack non-iterable bool object",
-  "timestamp": "2025-08-17T06:55:24.513988",
+  "timestamp": "2026-06-06T04:42:14.724156",
   "partial_success": [
+    "abashiri",
+    "kushiro",
+    "hachinohe",
     "ishinomaki",
-    "tateyama"
+    "tokyo",
+    "tateyama",
+    "shionomisaki"
   ]
 }
