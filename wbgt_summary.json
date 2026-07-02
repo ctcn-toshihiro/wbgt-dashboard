@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T21:32:05.110762+09:00",
+  "generated_at": "2026-07-02T23:58:40.612327+09:00",
   "stations": {
     "abashiri": {
       "name": "網走",
@@ -8,7 +8,7 @@
       "max_wbgt": 20.0,
       "min_wbgt": 12.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/07/02 21:25",
+      "update_time": "2026/07/02 23:25",
       "data_points": 17,
       "html_file": "abashiri.html"
     },
@@ -19,7 +19,7 @@
       "max_wbgt": 19.0,
       "min_wbgt": 10.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/07/02 21:25",
+      "update_time": "2026/07/02 23:25",
       "data_points": 17,
       "html_file": "kushiro.html"
     },
@@ -30,29 +30,29 @@
       "max_wbgt": 24.0,
       "min_wbgt": 17.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/07/02 21:25",
+      "update_time": "2026/07/02 23:25",
       "data_points": 17,
       "html_file": "hachinohe.html"
     },
     "ishinomaki": {
       "name": "石巻",
       "station_id": "34292",
-      "current_wbgt": 20.0,
+      "current_wbgt": 19.0,
       "max_wbgt": 23.0,
       "min_wbgt": 18.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/07/02 21:25",
+      "update_time": "2026/07/02 23:25",
       "data_points": 17,
       "html_file": "ishinomaki.html"
     },
     "tokyo": {
       "name": "東京",
       "station_id": "44132",
-      "current_wbgt": 20.0,
+      "current_wbgt": 21.0,
       "max_wbgt": 25.0,
       "min_wbgt": 20.0,
-      "danger_level": "ほぼ安全",
-      "update_time": "2026/07/02 21:25",
+      "danger_level": "注意",
+      "update_time": "2026/07/02 23:25",
       "data_points": 17,
       "html_file": "tokyo.html"
     },
@@ -63,7 +63,7 @@
       "max_wbgt": 26.0,
       "min_wbgt": 19.0,
       "danger_level": "注意",
-      "update_time": "2026/07/02 21:25",
+      "update_time": "2026/07/02 23:25",
       "data_points": 17,
       "html_file": "tateyama.html"
     },
@@ -74,7 +74,7 @@
       "max_wbgt": 27.0,
       "min_wbgt": 21.0,
       "danger_level": "注意",
-      "update_time": "2026/07/02 21:25",
+      "update_time": "2026/07/02 23:25",
       "data_points": 17,
       "html_file": "shionomisaki.html"
     }
