@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-07-26T20:47:51.215953+09:00",
+  "generated_at": "2026-07-26T23:15:32.589688+09:00",
   "stations": {
     "abashiri": {
       "name": "網走",
       "station_id": "17341",
       "current_wbgt": 15.0,
-      "max_wbgt": 21.0,
-      "min_wbgt": 14.0,
+      "max_wbgt": 22.0,
+      "min_wbgt": 15.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/07/26 20:25",
-      "data_points": 18,
+      "update_time": "2026/07/26 22:25",
+      "data_points": 17,
       "html_file": "abashiri.html"
     },
     "kushiro": {
       "name": "釧路",
       "station_id": "19432",
-      "current_wbgt": 17.0,
+      "current_wbgt": 16.0,
       "max_wbgt": 22.0,
       "min_wbgt": 15.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/07/26 20:25",
-      "data_points": 18,
+      "update_time": "2026/07/26 22:25",
+      "data_points": 17,
       "html_file": "kushiro.html"
     },
     "hachinohe": {
@@ -30,8 +30,8 @@
       "max_wbgt": 26.0,
       "min_wbgt": 18.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/07/26 20:25",
-      "data_points": 18,
+      "update_time": "2026/07/26 22:25",
+      "data_points": 17,
       "html_file": "hachinohe.html"
     },
     "ishinomaki": {
@@ -41,8 +41,8 @@
       "max_wbgt": 26.0,
       "min_wbgt": 20.0,
       "danger_level": "ほぼ安全",
-      "update_time": "2026/07/26 20:25",
-      "data_points": 18,
+      "update_time": "2026/07/26 22:25",
+      "data_points": 17,
       "html_file": "ishinomaki.html"
     },
     "tokyo": {
@@ -52,19 +52,19 @@
       "max_wbgt": 30.0,
       "min_wbgt": 23.0,
       "danger_level": "注意",
-      "update_time": "2026/07/26 20:25",
-      "data_points": 18,
+      "update_time": "2026/07/26 22:25",
+      "data_points": 17,
       "html_file": "tokyo.html"
     },
     "tateyama": {
       "name": "館山",
       "station_id": "45401",
-      "current_wbgt": 26.0,
+      "current_wbgt": 25.0,
       "max_wbgt": 31.0,
       "min_wbgt": 23.0,
       "danger_level": "警戒",
-      "update_time": "2026/07/26 20:25",
-      "data_points": 18,
+      "update_time": "2026/07/26 22:25",
+      "data_points": 17,
       "html_file": "tateyama.html"
     },
     "shionomisaki": {
@@ -74,8 +74,8 @@
       "max_wbgt": 33.0,
       "min_wbgt": 25.0,
       "danger_level": "警戒",
-      "update_time": "2026/07/26 20:25",
-      "data_points": 18,
+      "update_time": "2026/07/26 22:25",
+      "data_points": 17,
       "html_file": "shionomisaki.html"
     }
   },
