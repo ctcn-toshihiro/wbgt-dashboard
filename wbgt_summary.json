@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-12T18:46:28.822440+09:00",
+  "generated_at": "2026-08-12T20:30:00.007238+09:00",
   "stations": {
     "abashiri": {
       "name": "網走",
       "station_id": "17341",
       "current_wbgt": 22.0,
-      "max_wbgt": 29.0,
+      "max_wbgt": 28.0,
       "min_wbgt": 19.0,
       "danger_level": "注意",
-      "update_time": "2026/08/12 18:25",
+      "update_time": "2026/08/12 20:25",
       "data_points": 18,
       "html_file": "abashiri.html"
     },
@@ -19,7 +19,7 @@
       "max_wbgt": 25.0,
       "min_wbgt": 19.0,
       "danger_level": "注意",
-      "update_time": "2026/08/12 18:25",
+      "update_time": "2026/08/12 20:25",
       "data_points": 18,
       "html_file": "kushiro.html"
     },
@@ -30,7 +30,7 @@
       "max_wbgt": 28.0,
       "min_wbgt": 21.0,
       "danger_level": "注意",
-      "update_time": "2026/08/12 18:25",
+      "update_time": "2026/08/12 20:25",
       "data_points": 18,
       "html_file": "hachinohe.html"
     },
@@ -41,18 +41,18 @@
       "max_wbgt": 27.0,
       "min_wbgt": 22.0,
       "danger_level": "注意",
-      "update_time": "2026/08/12 18:25",
+      "update_time": "2026/08/12 20:25",
       "data_points": 18,
       "html_file": "ishinomaki.html"
     },
     "tokyo": {
       "name": "東京",
       "station_id": "44132",
-      "current_wbgt": 23.0,
+      "current_wbgt": 24.0,
       "max_wbgt": 28.0,
       "min_wbgt": 23.0,
       "danger_level": "注意",
-      "update_time": "2026/08/12 18:25",
+      "update_time": "2026/08/12 20:25",
       "data_points": 18,
       "html_file": "tokyo.html"
     },
@@ -63,7 +63,7 @@
       "max_wbgt": 30.0,
       "min_wbgt": 23.0,
       "danger_level": "注意",
-      "update_time": "2026/08/12 18:25",
+      "update_time": "2026/08/12 20:25",
       "data_points": 18,
       "html_file": "tateyama.html"
     },
@@ -71,10 +71,10 @@
       "name": "潮岬",
       "station_id": "65356",
       "current_wbgt": 23.0,
-      "max_wbgt": 28.0,
+      "max_wbgt": 29.0,
       "min_wbgt": 22.0,
       "danger_level": "注意",
-      "update_time": "2026/08/12 18:25",
+      "update_time": "2026/08/12 20:25",
       "data_points": 18,
       "html_file": "shionomisaki.html"
     }
