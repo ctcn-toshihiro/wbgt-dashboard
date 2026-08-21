@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-21T12:36:01.755654+09:00",
+  "generated_at": "2026-08-21T14:16:10.056799+09:00",
   "stations": {
     "abashiri": {
       "name": "網走",
       "station_id": "17341",
-      "current_wbgt": 21.0,
+      "current_wbgt": 20.0,
       "max_wbgt": 26.0,
       "min_wbgt": 17.0,
-      "danger_level": "注意",
-      "update_time": "2026/08/21 12:25",
+      "danger_level": "ほぼ安全",
+      "update_time": "2026/08/21 13:25",
       "data_points": 20,
       "html_file": "abashiri.html"
     },
     "kushiro": {
       "name": "釧路",
       "station_id": "19432",
-      "current_wbgt": 23.0,
+      "current_wbgt": 22.0,
       "max_wbgt": 26.0,
-      "min_wbgt": 19.0,
+      "min_wbgt": 20.0,
       "danger_level": "注意",
-      "update_time": "2026/08/21 12:25",
+      "update_time": "2026/08/21 13:25",
       "data_points": 20,
       "html_file": "kushiro.html"
     },
@@ -30,18 +30,18 @@
       "max_wbgt": 29.0,
       "min_wbgt": 21.0,
       "danger_level": "警戒",
-      "update_time": "2026/08/21 12:25",
+      "update_time": "2026/08/21 13:25",
       "data_points": 20,
       "html_file": "hachinohe.html"
     },
     "ishinomaki": {
       "name": "石巻",
       "station_id": "34292",
-      "current_wbgt": 27.0,
+      "current_wbgt": 28.0,
       "max_wbgt": 28.0,
       "min_wbgt": 23.0,
-      "danger_level": "警戒",
-      "update_time": "2026/08/21 12:25",
+      "danger_level": "厳重警戒",
+      "update_time": "2026/08/21 13:25",
       "data_points": 20,
       "html_file": "ishinomaki.html"
     },
@@ -52,7 +52,7 @@
       "max_wbgt": 29.0,
       "min_wbgt": 23.0,
       "danger_level": "厳重警戒",
-      "update_time": "2026/08/21 12:25",
+      "update_time": "2026/08/21 13:25",
       "data_points": 20,
       "html_file": "tokyo.html"
     },
@@ -63,18 +63,18 @@
       "max_wbgt": 29.0,
       "min_wbgt": 23.0,
       "danger_level": "厳重警戒",
-      "update_time": "2026/08/21 12:25",
+      "update_time": "2026/08/21 13:25",
       "data_points": 20,
       "html_file": "tateyama.html"
     },
     "shionomisaki": {
       "name": "潮岬",
       "station_id": "65356",
-      "current_wbgt": 28.0,
+      "current_wbgt": 29.0,
       "max_wbgt": 30.0,
       "min_wbgt": 23.0,
       "danger_level": "厳重警戒",
-      "update_time": "2026/08/21 12:25",
+      "update_time": "2026/08/21 13:25",
       "data_points": 20,
       "html_file": "shionomisaki.html"
     }
